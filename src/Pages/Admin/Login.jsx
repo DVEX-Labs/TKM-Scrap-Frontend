@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Login = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
     axios
-      .post("http://localhost:7000/AdminLogin", values)
+      .post(`${API_BASE_URL}/AdminLogin`, values)
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("token", response.data.token);

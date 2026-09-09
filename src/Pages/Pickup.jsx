@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const validationSchema = Yup.object({
   full_name: Yup.string().required("Full Name is required"),
@@ -79,7 +80,7 @@ const handleSubmit = async (values, { setSubmitting }, navigate) => {
     formData.append("pickupImage", values.pickupImage);
   
     const response = await axios.post(
-      "http://localhost:7000/pickup",
+      `${API_BASE_URL}/pickup`,
       formData,
       {
         headers: {

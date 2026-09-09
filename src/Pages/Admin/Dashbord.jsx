@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaBoxOpen, FaClipboardList, FaPlusCircle, FaUsers } from "react-icons/fa";
+import { API_BASE_URL } from "../../config";
 
 function Dashbord() {
   const [productCount, setProductCount] = useState(0);
@@ -12,7 +13,7 @@ function Dashbord() {
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        const prodRes = await axios.get("http://localhost:7000/adminProduct");
+        const prodRes = await axios.get(`${API_BASE_URL}/adminProduct`);
         if (prodRes.data && prodRes.data.adminCard) {
           setProductCount(prodRes.data.adminCard.length);
         }
@@ -21,7 +22,7 @@ function Dashbord() {
       }
 
       try {
-        const userRes = await axios.get("http://localhost:7000/Users");
+        const userRes = await axios.get(`${API_BASE_URL}/Users`);
         if (userRes.data && userRes.data.userData) {
           setUserCount(userRes.data.userData.length);
           setRecentOrders(userRes.data.userData.slice(0, 5));

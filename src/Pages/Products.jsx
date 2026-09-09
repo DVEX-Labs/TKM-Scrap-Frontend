@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 // import { Card } from "antd";
 
 function Products() {
@@ -7,7 +8,7 @@ function Products() {
 
   async function fetchProducts() {
     try {
-      const response = await axios.post("http://localhost:7000/Products");
+      const response = await axios.post(`${API_BASE_URL}/Products`);
       console.log(response.data);
       setCards(response.data.carddetails);
     } catch (error) {
@@ -29,7 +30,7 @@ function Products() {
           <div className="relative">
             <img
               className="w-full h-48 object-fill"
-              src={'http://localhost:7000/' +card.Image}
+              src={`${API_BASE_URL}/` + card.Image}
               alt="card Image"
             />
           </div>

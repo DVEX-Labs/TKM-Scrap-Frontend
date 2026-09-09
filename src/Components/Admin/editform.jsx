@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 const EditForm = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const EditForm = () => {
   useEffect(() => {
     if (productId) {
       // Fetch product data from API
-      fetch(`http://localhost:7000/products/${productId}`)
+      fetch(`${API_BASE_URL}/products/${productId}`)
         .then((response) => response.json())
         .then((data) =>
           setProduct({
@@ -50,7 +51,7 @@ const EditForm = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:7000/products/${productId}`,
+        `${API_BASE_URL}/products/${productId}`,
         {
           method: "PUT",
           body: formData,

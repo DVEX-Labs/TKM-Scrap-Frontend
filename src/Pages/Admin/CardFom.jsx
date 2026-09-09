@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Ensure you have SweetAlert2 installed and imported
+import { API_BASE_URL } from '../../config';
 
 const CardForm = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const CardForm = () => {
             formDataObj.append("title", formData.title);
             formDataObj.append("price", formData.price);
 
-            const response = await axios.post('http://localhost:7000/card', formDataObj, {
+            const response = await axios.post(`${API_BASE_URL}/card`, formDataObj, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

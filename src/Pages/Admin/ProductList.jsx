@@ -5,6 +5,7 @@ import axiosInstance from "../../instance/AxiosInstance";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaBoxOpen, FaPlusCircle } from "react-icons/fa";
+import { API_BASE_URL } from "../../config";
 
 function ProductList() {
   const [product, setProduct] = useState([]);
@@ -41,7 +42,7 @@ function ProductList() {
         try {
           console.log("delete here", id);
           const response = await axios.post(
-            `http://localhost:7000/productdelete?id=${id}`
+            `${API_BASE_URL}/productdelete?id=${id}`
           );
           if (response.status === 200) {
             setProduct(product.filter((user) => user._id !== id));

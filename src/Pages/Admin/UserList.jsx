@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Logo from "../../assets/image.png"; // Make sure the path to the logo is correct
+import { API_BASE_URL } from "../../config";
 
 const UserList = () => {
   const [userData, setUserData] = useState([]);
@@ -22,7 +23,7 @@ const UserList = () => {
   async function fetchUser() {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:7000/Users");
+      const response = await axios.get(`${API_BASE_URL}/Users`);
       if (response.data && response.data.userData) {
         setUserData(response.data.userData);
         setFilterdata(response.data.userData);
@@ -44,7 +45,7 @@ const UserList = () => {
   async function deleteDoc(id) {
     try {
       const response = await axios.post(
-        `http://localhost:7000/admin/User/delete?id=${id}`
+        `${API_BASE_URL}/admin/User/delete?id=${id}`
       );
       if (response.status === 200) {
         setUserData(userData.filter((user) => user._id !== id));
@@ -149,7 +150,7 @@ const UserList = () => {
                   <td className="px-4 py-3 text-center">
                     {user.pickupImage ? (
                       <img
-                        src={"http://localhost:7000/assets/pickupImage/" + user.pickupImage}
+                        src={`${API_BASE_URL}/assets/pickupImage/` + user.pickupImage}
                         className="w-20 h-20 object-cover rounded-md mx-auto border"
                         alt="Pickup"
                       />

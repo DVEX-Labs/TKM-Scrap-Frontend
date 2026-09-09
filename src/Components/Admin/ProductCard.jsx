@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 function ProductCard({ data, carddelete }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +57,7 @@ function ProductCard({ data, carddelete }) {
       </div>
       <img
         className="object-fill w-full h-80"
-        src={"http://localhost:7000/" + data.Image}
+        src={`${API_BASE_URL}/` + data.Image}
         alt="Demo Image"
       />
       <div className="p-4 leading-normal">
