@@ -1,189 +1,106 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTruckPickup } from "react-icons/fa";
 import { BsFillTrash2Fill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const [selected, setSelected] = useState("Collections");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSelect = (text) => {
-    setSelected(text);
-    setDropdownOpen(false);
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleDoubleClick = () => {
     navigate('/admin');
   };
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: "Contact", path: "/contact" },
+    { name: "About Us", path: "/about-us" },
+  ];
+
   return (
-    <div className="2xl:container 2xl:mx-auto">
-      <div className="bg-white rounded shadow-lg py-5 px-7">
-        <nav className="flex justify-between">
-          <div className="flex items-center space-x-3 lg:pr-16 pr-6">
-            <BsFillTrash2Fill
-              className="text-[40px] text-[#5F8F15] transition-all rounded-full w-14 -rotate-45 hover:shadow-sm shadow-lg ring hover:ring-4 ring-white"
-              onDoubleClick={handleDoubleClick}
-            />
-            <h2 className="font-normal text-2xl leading-6 text-[#5F8F15]">
-              ECO SCRAP
+    <div className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
+        <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-2xl py-3 px-6' : 'bg-transparent py-2 px-2'}`}>
+          
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#18931D] rounded-xl flex items-center justify-center shadow-lg cursor-pointer" onDoubleClick={handleDoubleClick}>
+              <BsFillTrash2Fill className="text-white text-xl" />
+            </div>
+            <h2 className="font-extrabold text-2xl tracking-tight cursor-pointer text-gray-900" onClick={() => navigate('/')}>
+              ECO <span className="text-[#18931D]">SCRAP</span>
             </h2>
           </div>
 
-          <ul className="hidden md:flex flex-auto space-x-2">
-            <li
-              onClick={() => handleSelect("Home")}
-              className={`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5F8F15] ${
-                selected === "Home"
-                  ? "text-white bg-[#5F8F15]"
-                  : "text-gray-600 border border-white bg-gray-50"
-              } cursor-pointer px-3 py-2.5 font-normal text-xs leading-3 shadow-md rounded`}
-            >
-              <Link
-                to="/"
-                className={selected === "Home" ? "text-white" : "text-gray-600"}
-              >
-                Home
-              </Link>
-            </li>
-            <li
-              onClick={() => handleSelect("Products")}
-              className={`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5F8F15] ${
-                selected === "Products"
-                  ? "text-white bg-[#5F8F15]"
-                  : "text-gray-600 border border-white bg-gray-50"
-              } cursor-pointer px-3 py-2.5 font-normal text-xs leading-3 shadow-md rounded`}
-            >
-              <Link
-                to="/products"
-                className={
-                  selected === "Products" ? "text-white" : "text-gray-600"
-                }
-              >
-                Products
-              </Link>
-            </li>
-            <li
-              onClick={() => handleSelect("Contact")}
-              className={`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5F8F15] ${
-                selected === "Contact"
-                  ? "text-white bg-[#5F8F15]"
-                  : "text-gray-600 border border-white bg-gray-50"
-              } cursor-pointer px-3 py-2.5 font-normal text-xs leading-3 shadow-md rounded`}
-            >
-              <Link
-                to="/contact"
-                className={
-                  selected === "Contact" ? "text-white" : "text-gray-600"
-                }
-              >
-                Contact
-              </Link>
-            </li>
-            <li
-              onClick={() => handleSelect("About Us")}
-              className={`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5F8F15] ${
-                selected === "About Us"
-                  ? "text-white bg-[#5F8F15]"
-                  : "text-gray-600 border border-white bg-gray-50"
-              } cursor-pointer px-3 py-2.5 font-normal text-xs leading-3 shadow-md rounded`}
-            >
-              <Link
-                to="/about-us"
-                className={
-                  selected === "About Us" ? "text-white" : "text-gray-600"
-                }
-              >
-                About Us
-              </Link>
-            </li>
+          <ul className="hidden md:flex items-center gap-1 bg-white/50 backdrop-blur-sm p-1.5 rounded-xl border border-gray-100 shadow-sm">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
+              return (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all block ${
+                      isActive 
+                        ? "bg-[#18931D] text-white shadow-md" 
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
-          <div className="flex space-x-5 justify-center items-center pl-2">
-            <Link to={"/pickup/"}>
-              <button
-                className={`flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5F8F15] ${
-                  selected
-                    ? "text-white bg-[#5F8F15]"
-                    : "text-gray-600 border border-white bg-gray-50"
-                } cursor-pointer px-3 py-2.5 font-normal text-xs leading-3 shadow-md rounded`}
-              >
-                <FaTruckPickup className="text-[25px]" />
-                PickUp
+          <div className="hidden md:flex items-center">
+            <Link to="/contact">
+              <button className="flex items-center gap-2 bg-[#141414] hover:bg-[#2B2B2B] text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5">
+                <FaTruckPickup className="text-lg" />
+                Book Pickup
               </button>
             </Link>
           </div>
 
-          <div
-            className="block md:hidden w-8 h-8 relative cursor-pointer"
-            onClick={toggleDropdown}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6H20M4 12H20M4 18H11"
-                stroke="#1F2937"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            {dropdownOpen && (
-              <ul className="p-2 w-40 border-r bg-white absolute rounded z-40 right-0 shadow mt-2 top-10">
-                <li
-                  onClick={() => handleSelect("Home")}
-                  className={`cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-[#5F8F15] focus:text-[#5F8F15] focus:outline-none ${
-                    selected === "Home" ? "font-bold" : ""
-                  }`}
-                >
-                  <Link to="/" className="flex items-center">
-                    <span className="ml-2">Home</span>
-                  </Link>
-                </li>
-                <li
-                  onClick={() => handleSelect("Products")}
-                  className={`cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-[#5F8F15] focus:text-[#5F8F15] focus:outline-none ${
-                    selected === "Products" ? "font-bold" : ""
-                  }`}
-                >
-                  <Link to="/products" className="flex items-center">
-                    <span className="ml-2">Products</span>
-                  </Link>
-                </li>
-                <li
-                  onClick={() => handleSelect("Contact")}
-                  className={`cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-[#5F8F15] focus:text-[#5F8F15] focus:outline-none ${
-                    selected === "Contact" ? "font-bold" : ""
-                  }`}
-                >
-                  <Link to="/contact" className="flex items-center">
-                    <span className="ml-2">Contact</span>
-                  </Link>
-                </li>
-                <li
-                  onClick={() => handleSelect("About Us")}
-                  className={`cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-[#5F8F15] focus:text-[#5F8F15] focus:outline-none ${
-                    selected === "About Us" ? "font-bold" : ""
-                  }`}
-                >
-                  <Link to="/about-us" className="flex items-center">
-                    <span className="ml-2">About Us</span>
-                  </Link>
-                </li>
-              </ul>
-            )}
+          <div className="md:hidden flex items-center">
+            <button onClick={() => setDropdownOpen(!dropdownOpen)} className="p-2 bg-gray-100 rounded-lg text-gray-600">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {dropdownOpen ? <path d="M18 6L6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
+              </svg>
+            </button>
           </div>
         </nav>
+
+        {/* Mobile Menu */}
+        {dropdownOpen && (
+          <div className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden md:hidden">
+            <div className="flex flex-col p-2">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    onClick={() => setDropdownOpen(false)}
+                    className={`px-4 py-3 rounded-xl font-bold text-sm ${isActive ? 'bg-[#E8F5E9] text-[#18931D]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+              <Link to="/contact" onClick={() => setDropdownOpen(false)} className="mt-2 flex items-center justify-center gap-2 bg-[#141414] text-white px-4 py-3 rounded-xl font-bold text-sm">
+                <FaTruckPickup /> Book Pickup
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
