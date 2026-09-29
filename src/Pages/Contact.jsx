@@ -44,18 +44,18 @@ function Contact() {
   return (
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
       {/* Page Header */}
-      <div className="w-full bg-[#0F172A] pt-40 pb-20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-20 blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none"></div>
+      <div className="w-full bg-white pt-40 pb-20 relative overflow-hidden border-b border-gray-100">
+        <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-[0.05] blur-[100px] pointer-events-none"></div>
         
         <div className="max-w-[1240px] mx-auto px-6 relative z-10 text-center">
           <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
             GET IN TOUCH
           </h4>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
             Contact Us
           </h1>
-          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
             Have questions about our scrap pickup service? Want to partner with us for your residential society? We're here to help.
           </p>
         </div>

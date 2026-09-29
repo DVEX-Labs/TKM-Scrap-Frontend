@@ -4,18 +4,18 @@ function About() {
   return (
     <div className="w-full bg-white min-h-screen pb-24">
       {/* Page Header (compensating for fixed navbar with pt-40) */}
-      <div className="w-full bg-[#0F172A] pt-40 pb-20 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
-        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-20 blur-[100px] pointer-events-none"></div>
+      <div className="w-full bg-white pt-40 pb-20 relative overflow-hidden border-b border-gray-100">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop')] bg-cover bg-center opacity-5"></div>
+        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-[0.05] blur-[100px] pointer-events-none"></div>
         
         <div className="max-w-[1240px] mx-auto px-6 relative z-10 text-center">
           <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
             OUR STORY
           </h4>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
             About Eco Scrap
           </h1>
-          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
             We are dedicated to turning waste into valuable resources, all while promoting a cleaner, greener planet for future generations.
           </p>
         </div>
