@@ -24,46 +24,16 @@ function About() {
       <div className="max-w-[1240px] mx-auto px-6 mt-16 md:mt-24 space-y-24">
         
         {/* Mission Section */}
-        <div className="flex flex-col lg:flex-row items-center gap-16">
-          <div className="w-full lg:w-1/2">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-              Our <span className="text-[#18931D]">Mission</span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed font-medium">
-              At Eco Scrap (TKM Shop), we're revolutionizing the way households and businesses manage their waste. Our mission is to make scrap collection highly convenient, entirely transparent, and financially rewarding while actively contributing to a sustainable future.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed font-medium">
-              We started with a vision to bring predictability to the unorganized scrap sector. With us, you get upfront market rates, verified digital weighing, scheduled doorstep pickups, and instant payouts. Every piece of scrap you recycle through us helps reduce landfill waste and promotes a circular economy.
-            </p>
-          </div>
-          <div className="w-full lg:w-1/2 relative">
-            <div className="absolute inset-0 bg-[#18931D] rounded-3xl translate-x-4 translate-y-4 opacity-10"></div>
-            <img
-              className="w-full h-[400px] object-cover rounded-3xl shadow-xl relative z-10"
-              src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?q=80&w=2070&auto=format&fit=crop"
-              alt="Recycling Process"
-            />
-          </div>
-        </div>
-
-        {/* Impact Section */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-12 text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Our Impact</h2>
-          <p className="text-gray-500 font-medium mb-12">Making a measurable difference in our community</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6">
-              <div className="text-5xl font-black text-[#18931D] mb-4">50k+</div>
-              <div className="text-lg font-bold text-gray-900">Happy Customers</div>
-            </div>
-            <div className="p-6 border-t md:border-t-0 md:border-l border-gray-100">
-              <div className="text-5xl font-black text-[#18931D] mb-4">500+</div>
-              <div className="text-lg font-bold text-gray-900">Tons Recycled</div>
-            </div>
-            <div className="p-6 border-t md:border-t-0 md:border-l border-gray-100">
-              <div className="text-5xl font-black text-[#18931D] mb-4">4.8 ★</div>
-              <div className="text-lg font-bold text-gray-900">Average Rating</div>
-            </div>
-          </div>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 leading-tight">
+            Our <span className="text-[#18931D]">Mission</span>
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed font-medium">
+            At Eco Scrap (TKM Shop), we're revolutionizing the way households and businesses manage their waste. Our mission is to make scrap collection highly convenient, entirely transparent, and financially rewarding while actively contributing to a sustainable future.
+          </p>
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
+            We started with a vision to bring predictability to the unorganized scrap sector. With us, you get upfront market rates, verified digital weighing, scheduled doorstep pickups, and instant payouts. Every piece of scrap you recycle through us helps reduce landfill waste and promotes a circular economy.
+          </p>
         </div>
 
         {/* Core Values */}
@@ -79,7 +49,7 @@ function About() {
               { title: "Convenience", desc: "We bring scrap collection to your doorstep, making it completely hassle-free.", icon: "🚛" },
               { title: "Customer First", desc: "Your satisfaction is our priority with quick responses and instant payouts.", icon: "🤝" }
             ].map((value, i) => (
-              <div key={i} className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 hover:-translate-y-2 transition-transform duration-300">
+              <div key={i} className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-gray-200 hover:-translate-y-2 transition-transform duration-300">
                 <div className="text-4xl mb-6">{value.icon}</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
                 <p className="text-gray-600 font-medium leading-relaxed">{value.desc}</p>
