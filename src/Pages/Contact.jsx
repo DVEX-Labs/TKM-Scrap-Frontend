@@ -4,18 +4,16 @@ function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sendCopy, setSendCopy] = useState(true);
 
   const handleFormSubmit = async () => {
     const formattedMessage = `
       Name: ${name}
       Email: ${email}
       Message: ${message}
-      Send me a copy: ${sendCopy ? "Yes" : "No"}
     `;
 
-    const whatsappNumber = "+917406941223"; // Replace with the desired WhatsApp number
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS proxy service URL
+    const whatsappNumber = "+917406941223"; 
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/"; 
 
     try {
       const response = await fetch(
@@ -32,187 +30,145 @@ function Contact() {
 
       if (response.ok) {
         console.log("Message sent successfully");
-        // You can add additional logic here, such as clearing the form fields or showing a success message
+        setName("");
+        setEmail("");
+        setMessage("");
       } else {
         console.error("Failed to send message");
-        // You can add error handling logic here
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      // You can add error handling logic here
     }
   };
 
   return (
-    <section className="mb-32">
-      <div className="relative h-[300px] overflow-hidden bg-cover bg-center bg-no-repeat">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11672.945750644447!2d-122.42107853750231!3d37.7730507907087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858070cc2fbd55%3A0xa71491d736f62d5c!2sGolden%20Gate%20Bridge!5e0!3m2!1sen!2sus!4v1619524992238!5m2!1sen!2sus"
-          width="100%"
-          height="480"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-        ></iframe>
+    <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
+      {/* Page Header */}
+      <div className="w-full bg-[#0F172A] pt-40 pb-20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-20 blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none"></div>
+        
+        <div className="max-w-[1240px] mx-auto px-6 relative z-10 text-center">
+          <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
+            GET IN TOUCH
+          </h4>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+            Contact Us
+          </h1>
+          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium">
+            Have questions about our scrap pickup service? Want to partner with us for your residential society? We're here to help.
+          </p>
+        </div>
       </div>
-      <div className="container px-6 md:px-12">
-        <div className="block rounded-lg bg-[hsla(0,0%,100%,0.8)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] md:py-16 md:px-12 -mt-[100px] backdrop-blur-[30px] border border-gray-300">
-          <div className="flex flex-wrap">
-            <div className="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleFormSubmit();
-                }}
+
+      <div className="max-w-[1240px] mx-auto px-6 mt-[-40px] relative z-20">
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col lg:flex-row">
+          
+          {/* Form Section */}
+          <div className="w-full lg:w-3/5 p-8 md:p-12">
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Send a Message</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleFormSubmit();
+              }}
+              className="space-y-6"
+            >
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Your Name</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
+                  placeholder="john@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                <textarea
+                  required
+                  rows="4"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium resize-none"
+                  placeholder="How can we help you today?"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-[#18931D] hover:bg-[#15801A] text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_8px_20px_rgba(24,147,29,0.25)] hover:-translate-y-1"
               >
-                <div className="relative mb-6">
-                  <input
-                    type="text"
-                    className="peer block w-full rounded border-2 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder-opacity-100 peer-focus:text-primary"
-                    id="exampleInput90"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                  <label
-                    className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary"
-                    htmlFor="exampleInput90"
-                  >
-                    Name
-                  </label>
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info Section */}
+          <div className="w-full lg:w-2/5 bg-[#F4FAF5] p-8 md:p-12 border-l border-green-50">
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-8">Contact Information</h3>
+            
+            <div className="space-y-8">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-[#18931D]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </div>
-                <div className="relative mb-6">
-                  <input
-                    type="email"
-                    className="peer block w-full rounded border-2 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder-opacity-100 peer-focus:text-primary"
-                    id="exampleInput91"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <label
-                    className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary"
-                    htmlFor="exampleInput91"
-                  >
-                    Email address
-                  </label>
+                <div>
+                  <p className="font-bold text-gray-900 mb-1">Our Location</p>
+                  <p className="text-gray-600 leading-relaxed font-medium">TKM Shop<br/>Kannur, Kerala</p>
                 </div>
-                <div className="relative mb-6">
-                  <textarea
-                    className="peer block w-full rounded border-2 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder-opacity-100"
-                    id="exampleFormControlTextarea1"
-                    rows="3"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  ></textarea>
-                  <label
-                    htmlFor="exampleFormControlTextarea1"
-                    className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary"
-                  >
-                    Message
-                  </label>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-[#18931D]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                 </div>
-                <button
-                  type="submit"
-                  className="mb-6 w-full rounded bg-[#5F8F15] text-white px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal"
-                >
-                  Send
-                </button>
-              </form>
-            </div>
-            <div className="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
-              <div className="flex flex-wrap">
-                <div className="mb-12 w-full md:w-6/12 lg:w-full xl:w-6/12">
-                  <div className="flex items-start">
-                    <div className="shrink-0">
-                      <div className="inline-block rounded-md bg-[#bedf8c] p-4 text-primary">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="h-6 w-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-6 grow">
-                      <p className="mb-2 font-bold">Technical support</p>
-                      <p className="text-sm text-neutral-500">
-                        example@gmail.com
-                      </p>
-                      <p className="text-sm text-neutral-500">1-600-890-4567</p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="font-bold text-gray-900 mb-1">Phone Number</p>
+                  <p className="text-gray-600 font-medium">+91 74069 41223</p>
                 </div>
-                <div className="mb-12 w-full md:w-6/12 lg:w-full xl:w-6/12">
-                  <div className="flex items-start">
-                    <div className="shrink-0">
-                      <div className="inline-block rounded-md bg-[#bedf8c] p-4 text-primary">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="h-7 w-7"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-6 grow">
-                      <p className="mb-2 font-bold">Sales questions</p>
-                      <p className="text-sm text-neutral-500">
-                        example@gmail.com
-                      </p>
-                      <p className="text-sm text-neutral-500">1-600-890-4567</p>
-                    </div>
-                  </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-[#18931D]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 </div>
-                <div className="w-full md:w-6/12 lg:w-full xl:w-6/12">
-                  <div className="flex items-start">
-                    <div className="shrink-0">
-                      <div className="inline-block rounded-md bg-[#bedf8c] p-4 text-primary">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="h-6 w-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M3.75 3h16.5M12 3v18"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-6 grow">
-                      <p className="mb-2 font-bold">Content info</p>
-                      <p className="text-sm text-neutral-500">
-                        example@gmail.com
-                      </p>
-                      <p className="text-sm text-neutral-500">1-600-890-4567</p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="font-bold text-gray-900 mb-1">Email Address</p>
+                  <p className="text-gray-600 font-medium">support@ecoscrap.com</p>
                 </div>
               </div>
             </div>
+
+            <div className="mt-12">
+              <div className="relative h-[200px] rounded-2xl overflow-hidden shadow-inner">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3904.7073238626027!2d75.3673323!3d11.8702336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba422b9b2aca753%3A0x380605a11ce24f6c!2sKannur%2C%20Kerala!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
