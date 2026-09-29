@@ -8,79 +8,91 @@ function Home() {
     <div className="w-full flex flex-col bg-white">
       <AnimatedText />
       
-      <div className="w-full bg-white py-24 relative overflow-hidden">
-        {/* Subtle background decoration */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-green-50 to-transparent -z-10"></div>
-        
-        <div className="max-w-[1240px] mx-auto px-6 flex flex-col lg:flex-row items-center justify-between gap-16">
-          
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E8F5E9] border border-[#C8E6C9] mb-6">
-              <span className="text-[#18931D] font-bold text-sm tracking-wide uppercase">Our Process</span>
-            </div>
-            
-            <h2 className="text-[36px] md:text-[48px] font-extrabold text-[#141414] leading-[1.15] tracking-tight mb-6">
-              Transforming <span className="text-[#18931D]">Waste</span> Into <br className="hidden lg:block" />A Greener Tomorrow
+      <div className="w-full bg-[#F9FBF9] py-24">
+        <div className="max-w-[1240px] mx-auto px-6">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
+              WHY ECO SCRAP
+            </h4>
+            <h2 className="text-[36px] md:text-[48px] font-extrabold text-[#141414] leading-tight mb-6">
+              Why choose <span className="text-[#18931D]">Eco Scrap?</span>
             </h2>
-            
-            <p className="text-[18px] text-[#6D6D6D] leading-relaxed mb-8 font-medium max-w-[600px]">
-              After you sell your dry recyclable waste to us, it doesn't just disappear. It is carefully collected, segregated, and baled at our ECO SCRAP facilities. 
+            <p className="text-[18px] text-[#6D6D6D] leading-relaxed">
+              Choosing ECO SCRAP means prioritizing environmental responsibility while enjoying a seamless and profitable experience. Our innovative platform minimizes waste and rewards you for it.
             </p>
-
-            {/* Feature List */}
-            <div className="flex flex-col gap-4 mb-10 w-full max-w-[450px]">
-              <div className="flex items-center gap-4 text-left">
-                <div className="w-8 h-8 rounded-full bg-[#D8FACF] flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <span className="text-[17px] font-bold text-[#141414]">Transported to authorized recyclers</span>
-              </div>
-              <div className="flex items-center gap-4 text-left">
-                <div className="w-8 h-8 rounded-full bg-[#D8FACF] flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <span className="text-[17px] font-bold text-[#141414]">Takes new forms in the economy</span>
-              </div>
-              <div className="flex items-center gap-4 text-left">
-                <div className="w-8 h-8 rounded-full bg-[#D8FACF] flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <span className="text-[17px] font-bold text-[#141414]">Achieves true circularity & zero waste</span>
-              </div>
-            </div>
-
-            <Link to="/about" className="px-8 py-4 bg-[#141414] hover:bg-[#2B2B2B] text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 inline-flex items-center justify-center gap-3 text-lg w-full sm:w-auto">
-              Learn More About Us
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </Link>
           </div>
 
-          <div className="w-full lg:w-1/2 relative mt-16 lg:mt-0 px-4 sm:px-8 lg:px-0">
-            {/* Background decoration for image */}
-            <div className="absolute inset-0 bg-[#18931D] rounded-3xl transform translate-x-4 translate-y-4 lg:translate-x-6 lg:translate-y-6 opacity-10"></div>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            {/* Main Image */}
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                src={Plant}
-                alt="Eco friendly process"
-                className="w-full h-[400px] sm:h-[500px] object-cover hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+            {/* Card 1 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">Smart & Easy Booking</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                Schedule your scrap pickup in just a few taps from your phone. No phone calls, no waiting, no hassle.
+              </p>
             </div>
 
-            {/* Floating Card */}
-            <div className="absolute -bottom-6 -left-2 sm:-left-8 bg-white p-4 sm:p-6 rounded-2xl shadow-[0px_10px_30px_rgba(0,0,0,0.12)] border border-gray-50 flex items-center gap-4 sm:gap-5 z-10">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#F4FAF5] rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            {/* Card 2 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
               </div>
-              <div>
-                <p className="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider mb-1">Impact Made</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-[#141414]">50,000+ kg</p>
-              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">Instant Cash Payments</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                Get paid immediately at the time of pickup. We offer the most competitive market rates for all your recyclables.
+              </p>
             </div>
+
+            {/* Card 3 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">100% Eco-Friendly</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                Rest assured your scrap is sent to certified processing units, actively reducing landfill waste and pollution.
+              </p>
+            </div>
+
+            {/* Card 4 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">Free Doorstep Pickup</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                Choose a time that works for you. Our verified executives will come directly to your location for collection.
+              </p>
+            </div>
+
+            {/* Card 5 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">Accurate Digital Weighing</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                We use calibrated digital scales in front of you. Absolute transparency with zero hidden fees or surprises.
+              </p>
+            </div>
+
+            {/* Card 6 */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(24,147,29,0.08)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#E8F5E9] rounded-xl flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-[#18931D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-[#141414] mb-3">Dedicated Support</h3>
+              <p className="text-[#6D6D6D] leading-relaxed text-sm">
+                Have a query? Our friendly customer support team is always available to help you with bookings and rates.
+              </p>
+            </div>
+
           </div>
-
         </div>
       </div>
 
