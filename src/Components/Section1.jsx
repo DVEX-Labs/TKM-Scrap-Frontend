@@ -48,25 +48,30 @@ function Section1() {
         </div>
       </div>
 
-      <div
-        className="min-h-[500px] overflow-hidden bg-cover bg-center bg-fixed bg-no-repeat shadow-inner relative flex items-center justify-center"
-        style={{ backgroundImage: `url(${bg2})` }}
-      >
-        <div className="absolute inset-0 bg-green-900/70 backdrop-blur-sm"></div>
-        <div className="w-full relative z-10 px-6 py-20 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="font-inter text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
-              Let's clean up together.
+      <div className="w-full bg-white pb-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1240px] mx-auto relative rounded-[40px] overflow-hidden shadow-2xl">
+          {/* Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#126B15] to-[#18931D]"></div>
+          
+          {/* Decorative Circles */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-white opacity-10 blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-green-300 opacity-20 blur-3xl"></div>
+          
+          <div className="relative z-10 px-6 py-20 md:py-24 text-center">
+            <h2 className="text-[40px] md:text-[56px] font-extrabold text-white leading-tight tracking-tight mb-6">
+              Ready to clear the clutter?
             </h2>
-            <p className="mt-4 leading-relaxed text-xl text-green-100 mb-10">
-              Request a pickup in seconds. Enjoy accurate digital weighing, friendly staff, and instant digital payments.
+            <p className="text-[18px] md:text-[20px] text-[#D8FACF] max-w-2xl mx-auto mb-10 font-medium">
+              Join thousands of smart households. Request a pickup in seconds and enjoy accurate weighing with instant digital payments.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact" className="px-8 py-4 bg-white text-green-700 hover:bg-gray-50 rounded-xl font-bold text-lg shadow-xl transition-all hover:-translate-y-1">
-                Book a Pickup
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-white text-[#18931D] hover:bg-[#F4FAF5] rounded-xl font-bold text-lg shadow-[0_8px_20px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+                Book a Pickup Free
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </Link>
-              <Link to="/products" className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-xl font-bold text-lg transition-all hover:-translate-y-1">
-                Check Scrap Rates
+              <Link to="/products" className="w-full sm:w-auto px-8 py-4 bg-[#147918] hover:bg-[#116614] border border-[#1CA322] text-white rounded-xl font-bold text-lg transition-all hover:-translate-y-1">
+                View Scrap Rates
               </Link>
             </div>
           </div>
