@@ -90,15 +90,23 @@ const CardForm = () => {
                             <input type="file" name="file" id="file" className="sr-only" onChange={handleChange} accept="image/*"/>
                             <label
                                 htmlFor="file"
-                                className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
+                                className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center cursor-pointer"
                             >
                                 <div>
-                                    <span className="mb-2 block text-xl font-semibold text-[#07074D]">
-                                        Drop files here
-                                    </span>
-                                    <span className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]">
-                                        Browse
-                                    </span>
+                                    {formData.file ? (
+                                        <span className="mb-2 block text-xl font-semibold text-green-500">
+                                            Selected: {formData.file.name}
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <span className="mb-2 block text-xl font-semibold text-[#07074D]">
+                                                Drop files here
+                                            </span>
+                                            <span className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]">
+                                                Browse
+                                            </span>
+                                        </>
+                                    )}
                                 </div>
                             </label>
                         </div>
