@@ -81,12 +81,7 @@ const handleSubmit = async (values, { setSubmitting }, navigate) => {
   
     const response = await axios.post(
       `${API_BASE_URL}/pickup`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      formData
     );
 
     console.log("Server Response:", response.data);

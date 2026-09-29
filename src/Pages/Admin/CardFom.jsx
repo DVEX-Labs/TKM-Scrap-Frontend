@@ -27,11 +27,7 @@ const CardForm = () => {
             formDataObj.append("title", formData.title);
             formDataObj.append("price", formData.price);
 
-            const response = await axios.post(`${API_BASE_URL}/card`, formDataObj, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const response = await axios.post(`${API_BASE_URL}/card`, formDataObj);
             console.log('Success:', response.data);
             if (response.data) {
                 Swal.fire({
