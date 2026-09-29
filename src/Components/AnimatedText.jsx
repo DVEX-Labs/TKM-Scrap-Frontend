@@ -62,8 +62,8 @@ const AnimatedText = () => {
           </h1>
           
           {/* Subheadline */}
-          <p ref={pRef} className="text-[18px] lg:text-[20px] text-[#6D6D6D] max-w-[540px] mt-8 font-medium leading-relaxed">
-            Join the green revolution today! We make recycling effortless by picking up scrap directly from your home and paying you the best market rates instantly.
+          <p ref={pRef} className="text-[20px] lg:text-[22px] text-[#6D6D6D] max-w-[480px] mt-8 font-medium leading-relaxed">
+            Effortless doorstep scrap pickup. Best market rates, paid instantly.
           </p>
 
           {/* Phone Input Form */}
