@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import GifImage from "../assets/GifImage.gif";
+import Lorry from "../assets/Lorry.png";
 import { Link } from "react-router-dom";
 
 const AnimatedText = () => {
@@ -39,22 +39,22 @@ const AnimatedText = () => {
           {/* Badge */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
-              <span className="text-[#18931D] font-semibold text-sm">Doorstep Scrap Collection</span>
+              <span className="text-[#18931D] font-semibold text-sm">Instant Doorstep Pickup</span>
             </div>
             <div className="flex items-center bg-[#E8F5E9] px-4 py-2 rounded-full border border-[#C8E6C9]">
-              <span className="text-[#18931D] font-bold text-sm">4.6 ★ • 50K+ Happy Users</span>
+              <span className="text-[#18931D] font-bold text-sm">Certified Green Recycler</span>
             </div>
           </div>
           
           {/* Headline */}
           <h1 ref={h1Ref} className="text-[42px] sm:text-[54px] md:text-[64px] font-extrabold text-[#141414] leading-[1.1] tracking-tight">
-            Clear Your <span className="text-[#18931D]">Scrap,</span><br/>
-            Fill Your <span className="text-[#18931D]">Wallet!</span>
+            Turn <span className="text-[#18931D]">Waste</span> Into<br/>
+            Instant <span className="text-[#18931D]">Cash!</span>
           </h1>
           
           {/* Subheadline */}
           <p ref={pRef} className="text-[18px] text-[#6D6D6D] max-w-[500px] mt-6 font-medium leading-relaxed">
-            No more scrap clutter! Schedule a fast pickup and get the best value for your recyclables—seamless, secure, and instant payouts. Looking to sell your scrap fast?
+            Join the green revolution today! We make recycling effortless by picking up scrap directly from your home and paying you the best market rates instantly.
           </p>
 
           {/* Phone Input Form */}
@@ -85,9 +85,9 @@ const AnimatedText = () => {
           <div className="relative w-full max-w-[500px]">
             <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-[#D8FACF] rounded-full blur-[80px] -z-10"></div>
             <img 
-              src={GifImage} 
-              alt="Recycling" 
-              className="w-full h-auto drop-shadow-2xl"
+              src={Lorry} 
+              alt="Eco Lorry" 
+              className="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
             />
           </div>
         </div>
