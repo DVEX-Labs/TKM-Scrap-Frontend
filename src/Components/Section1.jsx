@@ -1,36 +1,11 @@
 import { Link } from "react-router-dom";
 
 function Section1() {
-  const bg1 = "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop";
+
   const bg2 = "https://images.unsplash.com/photo-1604187351574-c75ca79f5807?q=80&w=2070&auto=format&fit=crop";
 
   return (
     <>
-      <div
-        className="min-h-[600px] overflow-hidden bg-cover bg-center bg-fixed bg-no-repeat shadow-inner relative flex items-center"
-        style={{ backgroundImage: `url(${bg1})` }}
-      >
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
-        <div className="w-full relative z-10 px-6 md:px-20 py-20 text-center md:text-left">
-          <div className="max-w-2xl mx-auto md:mx-0">
-            <h2 className="font-inter text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
-              Sustainable Recycling, <span className="text-green-400">Simplified</span>.
-            </h2>
-            <div className="mt-1 text-xl font-medium text-green-200 mb-6">
-              Protecting the planet begins at home.
-            </div>
-            <p className="mt-4 leading-relaxed text-lg text-gray-200">
-              Instead of letting your unwanted materials end up in harmful landfills, ECO SCRAP ensures they are repurposed responsibly. We partner with certified processing plants to breathe new life into everyday waste.
-            </p>
-            <p className="mt-4 leading-relaxed text-lg text-gray-200 mb-8">
-              By choosing our services, you actively lower carbon footprints and contribute to a healthier ecosystem.
-            </p>
-            <Link to="/contact" className="inline-block px-8 py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold text-lg shadow-lg transition-all hover:-translate-y-1">
-              Start Recycling Now
-            </Link>
-          </div>
-        </div>
-      </div>
 
       <div className="container mx-auto py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
