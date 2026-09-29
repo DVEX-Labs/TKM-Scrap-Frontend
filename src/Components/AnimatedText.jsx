@@ -54,9 +54,9 @@ const AnimatedText = () => {
           
           {/* Headline */}
           <h1 ref={h1Ref} className="text-[46px] sm:text-[56px] lg:text-[72px] font-extrabold text-[#141414] leading-[1.05] tracking-tight">
-            Turn <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#126B15] to-[#18931D]">Waste</span> Into<br/>
+            Turn <span className="text-[#18931D]">Waste</span> Into<br/>
             Instant <span className="relative inline-block">
-              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[#126B15] to-[#18931D]">Cash!</span>
+              <span className="relative z-10 text-[#18931D]">Cash!</span>
               <svg className="absolute w-full h-4 -bottom-1 left-0 -z-10 text-green-200" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 15 Q 50 0 100 15" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
             </span>
           </h1>
