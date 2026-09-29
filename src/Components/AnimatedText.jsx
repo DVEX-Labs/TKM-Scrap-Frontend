@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import Lorry from "../assets/Lorry.png";
 import GifImage from "../assets/GifImage.gif";
 import { Link } from "react-router-dom";
 
@@ -8,6 +7,7 @@ const AnimatedText = () => {
   const h1Ref = useRef(null);
   const pRef = useRef(null);
   const formRef = useRef(null);
+  const [mobile, setMobile] = useState("");
 
   useEffect(() => {
     gsap.fromTo(
@@ -19,69 +19,79 @@ const AnimatedText = () => {
     gsap.fromTo(
       pRef.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power3.out" }
     );
     
     gsap.fromTo(
       formRef.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out" }
     );
   }, []);
   
   return (
-    <div className="w-full relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-100 flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-20 min-h-[90vh]">
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-         <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[50%] rounded-full bg-green-200/40 blur-3xl"></div>
-         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-green-300/30 blur-3xl"></div>
-      </div>
-      
-      <div className="w-full md:w-[60%] flex flex-col items-center md:items-start justify-center gap-6 z-10 text-center md:text-left pt-10">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 font-bold text-sm shadow-sm border border-green-200">
-          <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-          Top Rated Scrap Collection in Town!
-        </div>
+    <div className="w-full bg-[#F4FAF5] min-h-[90vh] flex items-center pt-24 pb-16">
+      <div className="max-w-[1240px] mx-auto px-6 w-full flex flex-col md:flex-row items-center justify-between gap-12">
         
-        <h1 ref={h1Ref} className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight">
-          Clear Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-400">Scrap,</span><br/>
-          Fill Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-400">Wallet!</span>
-        </h1>
-        
-        <p ref={pRef} className="text-lg md:text-xl text-gray-600 max-w-xl font-medium mt-2">
-          No more clutter! Schedule a fast, doorstep pickup and get the best value for your recyclables—seamless, secure, and instant payouts.
-        </p>
+        {/* Left Content Area */}
+        <div className="w-full md:w-[55%] flex flex-col items-center md:items-start text-center md:text-left">
+          
+          {/* Badge */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+              <span className="text-[#18931D] font-semibold text-sm">Doorstep Scrap Collection</span>
+            </div>
+            <div className="flex items-center bg-[#E8F5E9] px-4 py-2 rounded-full border border-[#C8E6C9]">
+              <span className="text-[#18931D] font-bold text-sm">4.6 ★ • 50K+ Happy Users</span>
+            </div>
+          </div>
+          
+          {/* Headline */}
+          <h1 ref={h1Ref} className="text-[42px] sm:text-[54px] md:text-[64px] font-extrabold text-[#141414] leading-[1.1] tracking-tight">
+            Clear Your <span className="text-[#18931D]">Scrap,</span><br/>
+            Fill Your <span className="text-[#18931D]">Wallet!</span>
+          </h1>
+          
+          {/* Subheadline */}
+          <p ref={pRef} className="text-[18px] text-[#6D6D6D] max-w-[500px] mt-6 font-medium leading-relaxed">
+            No more scrap clutter! Schedule a fast pickup and get the best value for your recyclables—seamless, secure, and instant payouts. Looking to sell your scrap fast?
+          </p>
 
-        <div ref={formRef} className="mt-8 flex flex-col sm:flex-row w-full max-w-md gap-3">
-          <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-lg shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1 hover:shadow-xl text-center flex items-center justify-center gap-2">
-            Schedule Pickup 
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </Link>
-          <Link to="/products" className="w-full sm:w-auto px-8 py-4 bg-white text-gray-800 rounded-xl font-bold text-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition-all text-center">
-            View Rates
-          </Link>
+          {/* Phone Input Form */}
+          <div ref={formRef} className="mt-10 w-full max-w-[500px]">
+            <p className="text-sm font-bold text-[#141414] mb-3 text-left pl-1">Your mobile number</p>
+            <div className="flex flex-col sm:flex-row items-center bg-white rounded-2xl shadow-[0px_6px_16px_rgba(0,0,0,0.08)] p-2 border border-gray-100">
+              <div className="flex items-center px-4 py-3 bg-gray-50 rounded-xl w-full sm:w-auto mb-2 sm:mb-0 sm:mr-2">
+                <span className="text-gray-800 font-bold text-lg">+91</span>
+                <input 
+                  type="tel" 
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  placeholder="Enter mobile number" 
+                  className="bg-transparent border-none outline-none ml-3 text-lg w-full font-semibold placeholder:text-gray-400 placeholder:font-normal"
+                  maxLength={10}
+                />
+              </div>
+              <Link to="/contact" className="w-full sm:w-auto bg-[#18931D] hover:bg-[#15801A] text-white font-bold text-[17px] py-4 px-8 rounded-xl transition-colors text-center whitespace-nowrap">
+                Schedule Pickup
+              </Link>
+            </div>
+          </div>
+
         </div>
         
-        <div className="mt-10 flex items-center gap-6">
-           <div className="flex -space-x-4">
-              <img className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="User"/>
-              <img className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="User"/>
-              <img className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop" alt="User"/>
-              <div className="w-12 h-12 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm">+5k</div>
-           </div>
-           <div>
-             <div className="flex gap-1 text-yellow-400">
-               ★ ★ ★ ★ ★
-             </div>
-             <p className="text-sm font-bold text-gray-700 mt-1">4.8/5 from Happy Customers</p>
-           </div>
+        {/* Right Image Area */}
+        <div className="w-full md:w-[45%] flex justify-center md:justify-end mt-12 md:mt-0 relative">
+          <div className="relative w-full max-w-[500px]">
+            <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-[#D8FACF] rounded-full blur-[80px] -z-10"></div>
+            <img 
+              src={GifImage} 
+              alt="Recycling" 
+              className="w-full h-auto drop-shadow-2xl"
+            />
+          </div>
         </div>
-      </div>
-      
-      <div className="hidden md:flex w-[40%] items-center justify-center relative z-10 mt-16 md:mt-0">
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-tr from-green-400 to-emerald-200 rounded-full blur-3xl opacity-40 animate-pulse"></div>
-          <img src={GifImage} className="relative z-10 w-full max-w-md drop-shadow-2xl hover:scale-105 transition-transform duration-500" alt="Recycling animation" />
-        </div>
+
       </div>
     </div>
   );
