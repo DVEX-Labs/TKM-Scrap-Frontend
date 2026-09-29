@@ -49,28 +49,25 @@ function Section1() {
       </div>
 
       <div className="w-full bg-white pb-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[1240px] mx-auto relative rounded-[40px] overflow-hidden shadow-2xl">
-          {/* Background Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#126B15] to-[#18931D]"></div>
-          
-          {/* Decorative Circles */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-white opacity-10 blur-2xl"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-green-300 opacity-20 blur-3xl"></div>
+        <div className="max-w-[1240px] mx-auto relative rounded-[40px] overflow-hidden shadow-2xl bg-[#0F172A]">
+          {/* Subtle Background Glows */}
+          <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-20 blur-[100px] pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none"></div>
           
           <div className="relative z-10 px-6 py-20 md:py-24 text-center">
             <h2 className="text-[40px] md:text-[56px] font-extrabold text-white leading-tight tracking-tight mb-6">
               Ready to clear the clutter?
             </h2>
-            <p className="text-[18px] md:text-[20px] text-[#D8FACF] max-w-2xl mx-auto mb-10 font-medium">
+            <p className="text-[18px] md:text-[20px] text-slate-300 max-w-2xl mx-auto mb-10 font-medium">
               Join thousands of smart households. Request a pickup in seconds and enjoy accurate weighing with instant digital payments.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-white text-[#18931D] hover:bg-[#F4FAF5] rounded-xl font-bold text-lg shadow-[0_8px_20px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+              <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-[#18931D] hover:bg-[#15801A] text-white rounded-xl font-bold text-lg shadow-[0_8px_20px_rgba(24,147,29,0.3)] transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
                 Book a Pickup Free
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </Link>
-              <Link to="/products" className="w-full sm:w-auto px-8 py-4 bg-[#147918] hover:bg-[#116614] border border-[#1CA322] text-white rounded-xl font-bold text-lg transition-all hover:-translate-y-1">
+              <Link to="/products" className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl font-bold text-lg transition-all hover:-translate-y-1 backdrop-blur-md">
                 View Scrap Rates
               </Link>
             </div>
