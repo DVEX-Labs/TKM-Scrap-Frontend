@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/ecoscrap-logo-transparent.png";
+import logo from "../assets/tkm-logo-horizontal.png";
 
 function BrandLogo({
   className = "",
@@ -13,7 +13,7 @@ function BrandLogo({
   const image = (
     <img
       src={logo}
-      alt="Eco Scrap"
+      alt="TKM Scraps"
       className={`object-contain ${imageClassName}`}
       onDoubleClick={
         enableAdminShortcut

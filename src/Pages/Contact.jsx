@@ -398,7 +398,7 @@ function Contact() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 mb-1">Email Address</p>
-                  <p className="text-gray-600 font-medium">support@ecoscrap.com</p>
+                  <p className="text-gray-600 font-medium">support@tkmscraps.com</p>
                 </div>
               </div>
             </div>
@@ -412,7 +412,7 @@ function Contact() {
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
-                  title="Eco Scrap location"
+                  title="TKM Scraps location"
                 />
               </div>
             </div>

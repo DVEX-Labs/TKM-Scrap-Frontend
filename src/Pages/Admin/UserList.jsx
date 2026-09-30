@@ -36,6 +36,8 @@ const UserList = () => {
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const [loading, setLoading] = useState(true);
+  const [contacts, setContacts] = useState([]);
+  const [loadingContacts, setLoadingContacts] = useState(false);
 
   const orderDateKeys = useMemo(() => {
     const keys = new Set();
@@ -54,6 +56,8 @@ const UserList = () => {
       ),
     [allOrders, selectedDate]
   );
+
+
 
   async function fetchUser() {
     const startTime = Date.now();
@@ -147,22 +151,6 @@ const UserList = () => {
         </div>
       </div>
 
-      <OrderMonthCalendar
-        monthDate={calendarMonth}
-        selectedDate={selectedDate}
-        orderDateKeys={orderDateKeys}
-        onSelectDate={setSelectedDate}
-        onPrevMonth={() =>
-          setCalendarMonth(
-            (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
-          )
-        }
-        onNextMonth={() =>
-          setCalendarMonth(
-            (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
-          )
-        }
-      />
 
       <div className="overflow-x-auto">
         <table className="w-full table-auto border-collapse min-w-[980px]">
@@ -174,6 +162,7 @@ const UserList = () => {
               <th className="px-3 py-3 text-left font-semibold">Address</th>
               <th className="px-3 py-3 text-left font-semibold">Location</th>
               <th className="px-3 py-3 text-left font-semibold">Pincode</th>
+              <th className="px-3 py-3 text-left font-semibold">Message</th>
               <th className="px-3 py-3 text-left font-semibold">Date / Time</th>
               <th className="px-3 py-3 text-left font-semibold">Actions</th>
             </tr>
@@ -181,13 +170,13 @@ const UserList = () => {
           <tbody className="divide-y divide-gray-100">
             {loading ? (
               <tr>
-                <td colSpan={8} className="p-4">
+                <td colSpan={9} className="p-4">
                   <OrdersTableSkeleton />
                 </td>
               </tr>
             ) : filteredOrders.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-12 text-center">
+                <td colSpan={9} className="py-12 text-center">
                   <div className="text-4xl mb-2">📋</div>
                   <h3 className="text-base font-semibold text-gray-800">No orders found</h3>
                   <p className="text-sm text-gray-500 mt-1">
@@ -220,6 +209,7 @@ const UserList = () => {
                     {user.location || user.city || "—"}
                   </td>
                   <td className="px-3 py-3 text-gray-600">{user.zipcode || "—"}</td>
+                  <td className="px-3 py-3 text-gray-600 max-w-[200px] truncate" title={user.message}>{user.message || "—"}</td>
                   <td className="px-3 py-3 text-gray-500 whitespace-nowrap">
                     {user.createdAt ? new Date(user.createdAt).toLocaleString() : "N/A"}
                   </td>

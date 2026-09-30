@@ -13,13 +13,13 @@ function Home() {
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
-              WHY ECO SCRAP
+              WHY TKM SCRAPS
             </h4>
             <h2 className="text-[36px] md:text-[48px] font-extrabold text-[#141414] leading-tight mb-6">
-              Why choose <span className="text-[#18931D]">Eco Scrap?</span>
+              Why choose <span className="text-[#18931D]">TKM Scraps?</span>
             </h2>
             <p className="text-[18px] text-[#6D6D6D] leading-relaxed">
-              Choosing ECO SCRAP means prioritizing environmental responsibility while enjoying a seamless and profitable experience. Our innovative platform minimizes waste and rewards you for it.
+              Choosing TKM SCRAPS means prioritizing environmental responsibility while enjoying a seamless and profitable experience. Our innovative platform minimizes waste and rewards you for it.
             </p>
           </div>
 

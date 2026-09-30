@@ -1,6 +1,6 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import BrandLogo from "../BrandLogo";
-import { FaBoxOpen, FaChartPie, FaPlusCircle, FaUsers } from "react-icons/fa";
+import { FaBoxOpen, FaChartPie, FaPlusCircle, FaUsers, FaSignOutAlt } from "react-icons/fa";
 
 const linkClass = ({ isActive }) =>
   `flex items-center gap-3 mx-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
@@ -10,7 +10,13 @@ const linkClass = ({ isActive }) =>
   }`;
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const navigate = useNavigate();
   const closeOnMobile = () => setSidebarOpen(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/admin/login");
+  };
 
   return (
     <>
@@ -46,6 +52,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <FaUsers /> Orders
           </NavLink>
         </nav>
+
+        <div className="p-4 border-t border-gray-100">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 bg-[#FEE2E2] hover:bg-[#FECACA] text-[#DC2626] py-3 px-4 rounded-xl font-bold transition-colors shadow-sm"
+          >
+            <FaSignOutAlt /> Logout
+          </button>
+        </div>
       </aside>
     </>
   );

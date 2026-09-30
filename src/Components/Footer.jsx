@@ -59,7 +59,7 @@ function Footer() {
                 <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-[#18931D]">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
                 </div>
-                <span className="text-slate-400 font-medium">info@ecoscrap.com</span>
+                <span className="text-slate-400 font-medium">info@tkmscraps.com</span>
               </li>
             </ul>
           </div>
@@ -68,7 +68,7 @@ function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-800/60 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 font-medium text-sm">
-            &copy; {new Date().getFullYear()} ECO SCRAP. All rights reserved.
+            &copy; {new Date().getFullYear()} TKM SCRAPS. All rights reserved.
           </p>
           <p className="text-slate-500 font-medium text-sm">
             Made with <span className="text-[#18931D] text-base mx-1">♻️</span> for a greener planet

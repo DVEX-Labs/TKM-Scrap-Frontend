@@ -6,7 +6,7 @@ function About() {
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
       <PageHero
         eyebrow="Our Story"
-        title="About Eco Scrap"
+        title="About TKM Scraps"
         description="Transforming waste into value, one pickup at a time. We're on a mission to make scrap collection seamless, rewarding, and eco-friendly."
       />
 
@@ -18,7 +18,7 @@ function About() {
             Our <span className="text-[#18931D]">Mission</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed font-medium">
-            At Eco Scrap (TKM Shop), we're revolutionizing the way households and businesses manage their waste. Our mission is to make scrap collection highly convenient, entirely transparent, and financially rewarding while actively contributing to a sustainable future.
+            At TKM Scraps, we're revolutionizing the way households and businesses manage their waste. Our mission is to make scrap collection highly convenient, entirely transparent, and financially rewarding while actively contributing to a sustainable future.
           </p>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
             We started with a vision to bring predictability to the unorganized scrap sector. With us, you get upfront market rates, verified digital weighing, scheduled doorstep pickups, and instant payouts. Every piece of scrap you recycle through us helps reduce landfill waste and promotes a circular economy.
@@ -51,7 +51,7 @@ function About() {
         <div className="bg-[#0F172A] rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#18931D] rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#18931D] rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
-          <h2 className="text-2xl font-semibold text-white mb-4 relative z-10">How Eco Scrap Works</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4 relative z-10">How TKM Scraps Works</h2>
           <p className="text-slate-400 font-medium mb-16 relative z-10">Simple, fast, and highly rewarding</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
