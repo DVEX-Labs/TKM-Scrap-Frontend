@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
+import { PRODUCT_CATEGORIES } from "../../constants/productCategories";
 
 const EditForm = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const EditForm = () => {
   const [product, setProduct] = useState({
     title: "",
     price: "",
+    category: "Others",
     image: "",
   });
 
@@ -23,7 +25,8 @@ const EditForm = () => {
           setProduct({
             title: data.title,
             price: data.price,
-            image: data.Image, // Ensure correct image property name
+            category: data.category || "Others",
+            image: data.Image,
           })
         )
         .catch((error) => console.error("Error fetching product data:", error));
@@ -43,6 +46,7 @@ const EditForm = () => {
     const formData = new FormData();
     formData.append("title", product.title);
     formData.append("price", product.price);
+    formData.append("category", product.category);
 
     const fileInput = event.target.elements.image;
     if (fileInput.files.length > 0) {
@@ -89,17 +93,39 @@ const EditForm = () => {
                 htmlFor="title"
                 className="mb-3 block text-base font-medium text-[#07074D]"
               >
-                Edit Products Here:
+                Edit Scrap Here:
               </label>
               <input
                 type="text"
                 name="title"
                 id="title"
-                placeholder="Product Name"
+                placeholder="Scrap Name"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-green-500 focus:shadow-md"
                 value={product.title}
                 onChange={handleChange}
               />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="category"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Select Category:
+              </label>
+              <select
+                name="category"
+                id="category"
+                value={product.category}
+                onChange={handleChange}
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-green-500 focus:shadow-md"
+              >
+                {PRODUCT_CATEGORIES.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-5">
@@ -113,7 +139,7 @@ const EditForm = () => {
                 type="number"
                 name="price"
                 id="price"
-                placeholder="Product Price"
+                placeholder="Scrap Price"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-green-500 focus:shadow-md"
                 value={product.price}
                 onChange={handleChange}
@@ -150,7 +176,7 @@ const EditForm = () => {
 
             <div>
               <button className="hover:shadow-form w-full rounded-md bg-green-500 py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                Confirm adding Products
+                Confirm Update Scrap
               </button>
             </div>
           </form>

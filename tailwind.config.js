@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'rye':  ['Orbitron', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        rye: ['Orbitron', 'sans-serif'],
       },
     },
   },

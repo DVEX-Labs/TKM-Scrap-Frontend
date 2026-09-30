@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Lorry from "../assets/Lorry.png";
 import { Link } from "react-router-dom";
@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 const AnimatedText = () => {
   const h1Ref = useRef(null);
   const pRef = useRef(null);
-  const formRef = useRef(null);
-  const [mobile, setMobile] = useState("");
+  const ctaRef = useRef(null);
 
   useEffect(() => {
     gsap.fromTo(
@@ -23,7 +22,7 @@ const AnimatedText = () => {
     );
     
     gsap.fromTo(
-      formRef.current,
+      ctaRef.current,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out" }
     );
@@ -66,26 +65,23 @@ const AnimatedText = () => {
             Effortless doorstep scrap pickup. Best market rates, paid instantly.
           </p>
 
-          {/* Phone Input Form */}
-          <div ref={formRef} className="mt-12 w-full max-w-[540px]">
-            <p className="text-sm font-bold text-gray-500 mb-3 text-left pl-1 uppercase tracking-wide">Enter your mobile number to begin</p>
-            <div className="flex flex-col sm:flex-row items-center bg-white rounded-2xl shadow-[0px_8px_24px_rgba(0,0,0,0.06)] p-2.5 border border-gray-100 transition-all hover:shadow-[0px_12px_30px_rgba(24,147,29,0.08)] focus-within:ring-2 focus-within:ring-green-100 focus-within:border-green-300">
-              <div className="flex items-center px-4 py-3 bg-gray-50 rounded-xl w-full sm:w-auto mb-3 sm:mb-0 sm:mr-3 border border-gray-100">
-                <span className="text-gray-900 font-bold text-lg">+91</span>
-                <input 
-                  type="tel" 
-                  value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
-                  placeholder="Enter mobile number" 
-                  className="bg-transparent border-none outline-none ml-3 text-lg w-full font-bold placeholder:text-gray-400 placeholder:font-normal focus:ring-0"
-                  maxLength={10}
-                />
-              </div>
-              <Link to="/contact" className="w-full sm:w-auto bg-[#141414] hover:bg-[#2B2B2B] text-white font-bold text-[17px] py-4 px-8 rounded-xl transition-all hover:-translate-y-0.5 text-center whitespace-nowrap shadow-md">
-                Schedule Pickup
+          {/* CTA Buttons */}
+          <div ref={ctaRef} className="mt-12 w-full max-w-[540px]">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/pickup"
+                className="w-full sm:flex-1 inline-flex items-center justify-center bg-[#18931D] hover:bg-[#15801A] text-white font-bold text-[17px] py-4 px-8 rounded-xl transition-all hover:-translate-y-0.5 shadow-md shadow-green-900/20 text-center"
+              >
+                Book a Pickup Free
+              </Link>
+              <Link
+                to="/products"
+                className="w-full sm:flex-1 inline-flex items-center justify-center bg-white hover:bg-[#F4FAF5] text-[#18931D] font-bold text-[17px] py-4 px-8 rounded-xl transition-all hover:-translate-y-0.5 border-2 border-[#18931D] text-center"
+              >
+                View Scrap Rates
               </Link>
             </div>
-            
+
             <div className="flex items-center gap-4 mt-6 text-sm font-semibold text-gray-500 pl-1">
               <div className="flex items-center gap-1.5"><svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg> Free Pickup</div>
               <div className="flex items-center gap-1.5"><svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg> Best Rates</div>

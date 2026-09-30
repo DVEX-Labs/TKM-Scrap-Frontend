@@ -1,31 +1,20 @@
 import { Link } from "react-router-dom";
+import PageHero from "../Components/PageHero";
 
 function About() {
   return (
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
-      {/* Page Header */}
-      <div className="w-full bg-white pt-40 pb-20 relative overflow-hidden border-b border-gray-100">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop')] bg-cover bg-center opacity-5"></div>
-        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-[0.05] blur-[100px] pointer-events-none"></div>
-        
-        <div className="max-w-[1240px] mx-auto px-6 relative z-10 text-center">
-          <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
-            OUR STORY
-          </h4>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-            About Eco Scrap
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
-            Transforming waste into value, one pickup at a time. We're on a mission to make scrap collection seamless, rewarding, and eco-friendly.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Our Story"
+        title="About Eco Scrap"
+        description="Transforming waste into value, one pickup at a time. We're on a mission to make scrap collection seamless, rewarding, and eco-friendly."
+      />
 
       <div className="max-w-[1240px] mx-auto px-6 mt-16 md:mt-24 space-y-24">
         
         {/* Mission Section */}
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 leading-tight">
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 leading-tight">
             Our <span className="text-[#18931D]">Mission</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed font-medium">
@@ -39,7 +28,7 @@ function About() {
         {/* Core Values */}
         <div>
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Our Core Values</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Core Values</h2>
             <p className="text-gray-500 font-medium">What drives us every single day</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -62,7 +51,7 @@ function About() {
         <div className="bg-[#0F172A] rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#18931D] rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#18931D] rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
-          <h2 className="text-3xl font-extrabold text-white mb-4 relative z-10">How Eco Scrap Works</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4 relative z-10">How Eco Scrap Works</h2>
           <p className="text-slate-400 font-medium mb-16 relative z-10">Simple, fast, and highly rewarding</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">

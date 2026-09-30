@@ -9,6 +9,7 @@ const validationSchema = Yup.object({
   full_name: Yup.string().required("Full Name is required"),
   phone: Yup.number().required("Phone number is required"),
   address: Yup.string().required("Address is required"),
+  location: Yup.string().required("Location is required"),
   city: Yup.string().required("City is required"),
   country: Yup.string().required("Country is required"),
   state: Yup.string().required("State is required"),
@@ -31,6 +32,7 @@ const initialValues = {
   full_name: "",
   phone: "",
   address: "",
+  location: "",
   city: "",
   country: "",
   state: "",
@@ -44,13 +46,17 @@ const handleLocation = async (setFieldValue) => {
       const { latitude, longitude } = position.coords;
       try {
         const response = await axios.get(
-        `  https://nominatim.openstreetmap.org/reverse`,
+          "https://nominatim.openstreetmap.org/reverse",
           {
             params: { lat: latitude, lon: longitude, format: "json" },
           }
         );
         const { address } = response.data;
         setFieldValue("address", address.road || "");
+        setFieldValue(
+          "location",
+          address.suburb || address.neighbourhood || address.city || address.town || address.village || ""
+        );
         setFieldValue(
           "city",
           address.city || address.town || address.village || ""
@@ -73,6 +79,7 @@ const handleSubmit = async (values, { setSubmitting }, navigate) => {
     formData.append("full_name", values.full_name);
     formData.append("phone", values.phone);
     formData.append("address", values.address);
+    formData.append("location", values.location);
     formData.append("city", values.city);
     formData.append("country", values.country);
     formData.append("state", values.state);
@@ -109,7 +116,7 @@ const Pickup = () => {
           <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
             DOORSTEP SERVICE
           </h4>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
             Schedule a Pickup
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
@@ -171,7 +178,7 @@ const Pickup = () => {
                     </div>
 
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Street Address</label>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Address</label>
                       <Field
                         type="text"
                         name="address"
@@ -179,6 +186,28 @@ const Pickup = () => {
                         placeholder="House No, Building, Street"
                       />
                       <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-1 font-medium" />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                      <Field
+                        type="text"
+                        name="location"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
+                        placeholder="Area, locality, landmark"
+                      />
+                      <ErrorMessage name="location" component="div" className="text-red-500 text-sm mt-1 font-medium" />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Pincode</label>
+                      <Field
+                        type="text"
+                        name="zipcode"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
+                        placeholder="6-digit pincode"
+                      />
+                      <ErrorMessage name="zipcode" component="div" className="text-red-500 text-sm mt-1 font-medium" />
                     </div>
 
                     <div>
@@ -209,16 +238,6 @@ const Pickup = () => {
                         className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
                       />
                       <ErrorMessage name="country" component="div" className="text-red-500 text-sm mt-1 font-medium" />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Pincode</label>
-                      <Field
-                        type="text"
-                        name="zipcode"
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#18931D] focus:border-transparent transition-all font-medium"
-                      />
-                      <ErrorMessage name="zipcode" component="div" className="text-red-500 text-sm mt-1 font-medium" />
                     </div>
 
                     <div className="md:col-span-2">

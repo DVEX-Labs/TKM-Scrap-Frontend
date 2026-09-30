@@ -1,56 +1,202 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { Link } from "react-router-dom";
+import PageHero from "../Components/PageHero";
+import { PRODUCT_CATEGORY_FILTER_ORDER } from "../constants/productCategories";
+import { MIN_LOADER_MS } from "../utils/loader";
+
+const CATEGORY_RULES = [
+  { category: "Paper", keywords: ["paper", "newspaper", "cardboard", "book", "magazine"] },
+  { category: "Metal", keywords: ["metal", "iron", "steel", "copper", "aluminum", "aluminium", "brass", "tin"] },
+  { category: "Plastic", keywords: ["plastic", "pet", "pvc", "drum", "bottle", "pipe"] },
+  { category: "Home Appliances", keywords: ["ac", "air conditioner", "fridge", "refrigerator", "washing", "cooler", "fan", "geyser", "microwave"] },
+  { category: "E-Waste", keywords: ["e-waste", "ewaste", "electronic", "computer", "laptop", "mobile", "phone", "tv", "television", "battery"] },
+  { category: "Motors", keywords: ["motor", "engine"] },
+  { category: "Vehicles", keywords: ["vehicle", "car", "bike", "scooter", "auto"] },
+  { category: "Automotive Parts", keywords: ["automotive", "tyre", "tire", "rim", "spare"] },
+  { category: "Kitchen Equipments", keywords: ["kitchen", "utensil", "vessel", "pan", "pot"] },
+];
+
+function inferCategory(title = "") {
+  const normalized = title.toLowerCase();
+  const match = CATEGORY_RULES.find(({ keywords }) =>
+    keywords.some((keyword) => normalized.includes(keyword))
+  );
+  return match?.category ?? "Others";
+}
+
+function formatPriceUnit(title = "") {
+  const normalized = title.toLowerCase();
+  if (/(ac|drum|bottle|pc|piece|unit|fan|cooler|fridge|refrigerator|tv|phone|laptop)/.test(normalized)) {
+    return "Pc";
+  }
+  return "Kg";
+}
+
+const PRODUCTS_CACHE_KEY = "eco-scrap-products-v1";
+const PRODUCTS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+function readProductsCache() {
+  try {
+    const raw = sessionStorage.getItem(PRODUCTS_CACHE_KEY);
+    if (!raw) return null;
+    const { data, savedAt } = JSON.parse(raw);
+    if (!Array.isArray(data) || Date.now() - savedAt > PRODUCTS_CACHE_TTL_MS) {
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function writeProductsCache(data) {
+  try {
+    sessionStorage.setItem(
+      PRODUCTS_CACHE_KEY,
+      JSON.stringify({ data, savedAt: Date.now() })
+    );
+  } catch {
+    // ignore quota / private mode errors
+  }
+}
+
+function ProductGridSkeleton() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {Array.from({ length: 10 }).map((_, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
+        >
+          <div className="aspect-square bg-gray-100" />
+          <div className="p-3.5 space-y-2">
+            <div className="h-2.5 w-16 bg-gray-100 rounded" />
+            <div className="h-4 w-full bg-gray-100 rounded" />
+            <div className="h-8 w-full bg-gray-100 rounded-full mt-3" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function NoProductsPlaceholder() {
+  return (
+    <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
+      <div className="text-4xl mb-3">🔍</div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">No items found</h3>
+      <p className="text-gray-500 text-sm">
+        Scrap rates will appear here once products are added.
+      </p>
+    </div>
+  );
+}
+
+function BookFreePickupButton() {
+  return (
+    <div className="mt-10 text-center">
+      <Link
+        to="/contact"
+        className="inline-flex items-center gap-2 bg-[#18931D] hover:bg-[#15801A] text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md shadow-green-900/20 hover:-translate-y-1"
+      >
+        Book Free Pickup
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </Link>
+    </div>
+  );
+}
 
 function Products() {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(() => readProductsCache() ?? []);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("All");
 
-  const categories = ["All", "Paper", "Metal", "Plastic", "E-Waste", "Other"];
-
-  async function fetchProducts() {
-    try {
-      setIsLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/Products`);
-      setCards(response.data.carddetails);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const categories = PRODUCT_CATEGORY_FILTER_ORDER;
 
   useEffect(() => {
+    let cancelled = false;
+    let loaderTimer;
+
+    async function fetchProducts() {
+      const startTime = Date.now();
+      const hadCache = Boolean(readProductsCache()?.length);
+
+      try {
+        const response = await axios.get(`${API_BASE_URL}/Products`, {
+          timeout: 8000,
+        });
+        const list = response.data?.carddetails ?? [];
+        if (!cancelled) {
+          setCards(list);
+          writeProductsCache(list);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        if (!cancelled && !hadCache) {
+          setCards([]);
+        }
+      } finally {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, MIN_LOADER_MS - elapsed);
+        loaderTimer = setTimeout(() => {
+          if (!cancelled) {
+            setIsLoading(false);
+          }
+        }, remaining);
+      }
+    }
+
     fetchProducts();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(loaderTimer);
+    };
   }, []);
 
-  const filteredCards = cards.filter(card => {
+  const cardsWithCategory = useMemo(
+    () =>
+      cards.map((card) => ({
+        ...card,
+        category: card.category || inferCategory(card.title),
+        unit: formatPriceUnit(card.title),
+      })),
+    [cards]
+  );
+
+  const categoryCounts = useMemo(() => {
+    const counts = { All: cardsWithCategory.length };
+    cardsWithCategory.forEach((card) => {
+      counts[card.category] = (counts[card.category] || 0) + 1;
+    });
+    return counts;
+  }, [cardsWithCategory]);
+
+  const filteredCards = cardsWithCategory.filter((card) => {
     const matchesSearch = card.title?.toLowerCase().includes(searchTerm.toLowerCase());
-    // In a real app we'd filter by card.category, but assuming we don't have it, we just show all if matches search
-    return matchesSearch;
+    const matchesCategory = activeTab === "All" || card.category === activeTab;
+    return matchesSearch && matchesCategory;
   });
+
+  const hasProducts = cardsWithCategory.length > 0;
+  const hasFilteredResults = filteredCards.length > 0;
+  const showPageHero = hasProducts;
+  const showEmptyCatalog = !isLoading && !hasProducts;
+  const compactTopLayout = showEmptyCatalog || (isLoading && !hasProducts);
 
   return (
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
-      {/* Page Header */}
-      <div className="w-full bg-white pt-40 pb-20 relative overflow-hidden border-b border-gray-100">
-        <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-[0.05] blur-[100px] pointer-events-none"></div>
-        
-        <div className="max-w-[1240px] mx-auto px-6 relative z-10 text-center">
-          <h4 className="text-[#18931D] font-bold text-sm tracking-[0.2em] uppercase mb-4">
-            TRANSPARENT PRICING
-          </h4>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-            Today's Scrap Rates
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium mb-10">
-            We offer the best market prices for your recyclable materials. Check our rates below and book a free doorstep pickup today.
-          </p>
-
+      {showPageHero && (
+        <PageHero
+          eyebrow="Transparent Pricing"
+          title="Today's Scrap Rates"
+          description="We offer the best market prices for your recyclable materials. Check our rates below and book a free doorstep pickup today."
+        >
           <div className="max-w-xl mx-auto relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
@@ -60,87 +206,109 @@ function Products() {
             <input
               type="text"
               placeholder="Search for items like 'Newspaper' or 'Iron'..."
-              className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#18931D]/50 focus:border-[#18931D] sm:text-lg shadow-sm transition-all"
+              className="block w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-2xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#18931D]/40 focus:border-[#18931D] text-base shadow-sm transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </div>
-      </div>
+        </PageHero>
+      )}
 
-      <div className="max-w-[1240px] mx-auto px-6 mt-12 relative z-20">
-        
-        {/* Category Tabs */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-10 pb-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${
-                activeTab === category 
-                  ? "bg-[#18931D] text-white shadow-md shadow-green-900/20" 
-                  : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+      <div
+        className={`max-w-[1240px] mx-auto px-6 relative z-20 ${
+          compactTopLayout ? "pt-32 md:pt-36" : "mt-8"
+        }`}
+      >
+        {isLoading ? (
+          <ProductGridSkeleton />
+        ) : !hasProducts ? (
+          <>
+            <NoProductsPlaceholder />
+            <BookFreePickupButton />
+          </>
+        ) : (
+          <>
+            <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-1">
+              {categories.map((category) => {
+                const count = categoryCounts[category] ?? 0;
+                if (category !== "All" && count === 0) return null;
 
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6 md:p-10 border border-gray-50">
-          <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-100">
-            <div>
-              <h2 className="text-2xl font-extrabold text-gray-900">
-                {searchTerm ? "Search Results" : `${activeTab} Items`}
-              </h2>
-              <p className="text-gray-500 font-medium text-sm mt-1">Prices fluctuate based on market conditions.</p>
+                return (
+                  <button
+                    key={category}
+                    onClick={() => setActiveTab(category)}
+                    className={`whitespace-nowrap px-4 py-2 rounded-full font-semibold text-sm transition-all ${
+                      activeTab === category
+                        ? "bg-[#0F172A] text-white"
+                        : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
+                    {category}
+                    {count > 0 ? ` (${count})` : ""}
+                  </button>
+                );
+              })}
             </div>
-          </div>
 
-          {isLoading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#18931D]"></div>
-            </div>
-          ) : filteredCards.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No items found</h3>
-              <p className="text-gray-500">We couldn't find any items matching your search.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCards.map((card, _id) => (  
-                <div key={`${card._id}-${_id}`} className="group flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100 hover:border-[#18931D]/30 hover:shadow-[0_8px_24px_rgba(24,147,29,0.08)] transition-all duration-300">
-                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-50 shrink-0">
-                    <img
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      src={`${API_BASE_URL}/` + card.Image}
-                      alt={card.title || "Scrap Item"}
-                    />
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-gray-900 truncate group-hover:text-[#18931D] transition-colors">{card.title}</h3>
-                    <div className="text-[#18931D] font-extrabold text-lg mt-1">
-                      ₹{card.price} <span className="text-gray-500 text-xs font-medium">/ kg</span>
+            {!hasFilteredResults ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600 text-sm mb-3">No items match your current search or category.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setActiveTab("All");
+                  }}
+                  className="text-sm font-semibold text-[#18931D] hover:underline"
+                >
+                  Reset search & filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                {filteredCards.map((card, index) => (
+                  <div
+                    key={`${card._id}-${index}`}
+                    className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition-all duration-300"
+                  >
+                    <div className="aspect-square bg-[#F3F4F6] p-4 flex items-center justify-center">
+                      <img
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                        src={`${API_BASE_URL}/` + card.Image}
+                        alt={card.title || "Scrap Item"}
+                      />
+                    </div>
+
+                    <div className="p-3.5">
+                      <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-gray-400 mb-1">
+                        {card.category}
+                      </p>
+                      <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 min-h-[2.5rem]">
+                        {card.title}
+                      </h3>
+
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        <p className="text-[#18931D] font-bold text-sm">
+                          ₹{card.price}
+                          <span className="text-gray-500 font-medium text-xs">/{card.unit}</span>
+                        </p>
+                        <Link
+                          to="/contact"
+                          className="inline-flex items-center gap-1 bg-[#0F172A] hover:bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0"
+                        >
+                          Sell
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-
-                  <Link to="/contact" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#18931D] group-hover:text-white transition-all shrink-0 shadow-sm">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path></svg>
-                  </Link>
-                </div>
-              ))} 
-            </div>
-          )}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link to="/contact" className="inline-flex items-center gap-2 bg-[#0F172A] hover:bg-black text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:-translate-y-1">
-            Book Free Pickup
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-          </Link>
-        </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

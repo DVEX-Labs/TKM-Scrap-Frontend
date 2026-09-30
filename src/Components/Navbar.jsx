@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { FaTruckPickup } from "react-icons/fa";
-import { BsFillTrash2Fill } from "react-icons/bs";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import BrandLogo from "./BrandLogo";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -14,10 +13,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleDoubleClick = () => {
-    navigate('/admin');
-  };
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -31,14 +26,10 @@ const Navbar = () => {
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
         <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-2xl py-3 px-6' : 'bg-transparent py-2 px-2'}`}>
           
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#18931D] rounded-xl flex items-center justify-center shadow-lg cursor-pointer" onDoubleClick={handleDoubleClick}>
-              <BsFillTrash2Fill className="text-white text-xl" />
-            </div>
-            <h2 className="font-extrabold text-2xl tracking-tight cursor-pointer text-gray-900" onClick={() => navigate('/')}>
-              ECO <span className="text-[#18931D]">SCRAP</span>
-            </h2>
-          </div>
+          <BrandLogo
+            imageClassName="h-9 sm:h-10 w-auto"
+            enableAdminShortcut
+          />
 
           <ul className="hidden md:flex items-center gap-1 bg-white/50 backdrop-blur-sm p-1.5 rounded-xl border border-gray-100 shadow-sm">
             {navLinks.map((link) => {
@@ -62,7 +53,7 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center">
             <Link to="/contact">
-              <button className="flex items-center gap-2 bg-[#141414] hover:bg-[#2B2B2B] text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5">
+              <button className="flex items-center gap-2 bg-[#141414] hover:bg-[#18931D] text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5">
                 <FaTruckPickup className="text-lg" />
                 Book Pickup
               </button>
@@ -89,13 +80,13 @@ const Navbar = () => {
                     key={link.name}
                     to={link.path}
                     onClick={() => setDropdownOpen(false)}
-                    className={`px-4 py-3 rounded-xl font-bold text-sm ${isActive ? 'bg-[#E8F5E9] text-[#18931D]' : 'text-gray-600 hover:bg-gray-50'}`}
+                    className={`px-4 py-3 rounded-xl font-bold text-sm ${isActive ? 'bg-[#18931D] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
                   >
                     {link.name}
                   </Link>
                 );
               })}
-              <Link to="/contact" onClick={() => setDropdownOpen(false)} className="mt-2 flex items-center justify-center gap-2 bg-[#141414] text-white px-4 py-3 rounded-xl font-bold text-sm">
+              <Link to="/contact" onClick={() => setDropdownOpen(false)} className="mt-2 flex items-center justify-center gap-2 bg-[#141414] hover:bg-[#18931D] text-white px-4 py-3 rounded-xl font-bold text-sm transition-colors">
                 <FaTruckPickup /> Book Pickup
               </Link>
             </div>
