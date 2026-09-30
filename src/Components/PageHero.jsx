@@ -1,6 +1,8 @@
-function PageHero({ eyebrow, title, description, children }) {
+function PageHero({ eyebrow, title, description, children, compact = false }) {
   return (
-    <div className="w-full bg-white pt-32 md:pt-36 pb-16 md:pb-20 relative overflow-hidden border-b border-gray-100">
+    <div className={`w-full bg-white relative overflow-hidden border-b border-gray-100 ${
+      compact ? "pt-28 md:pt-32 pb-8 md:pb-10" : "pt-32 md:pt-36 pb-16 md:pb-20"
+    }`}>
       <div className="absolute top-0 right-0 -mr-32 -mt-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-10 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-[500px] h-[500px] rounded-full bg-[#18931D] opacity-[0.05] blur-[100px] pointer-events-none" />
 

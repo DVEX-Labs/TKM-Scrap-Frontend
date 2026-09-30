@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import UserLayout from '../Layout/UserLayout'
 import Home from '../Pages/Home'
@@ -17,6 +17,7 @@ function UserRouter() {
         <Route path="/products" element={<Products />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   )

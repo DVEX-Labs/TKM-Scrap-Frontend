@@ -10,7 +10,7 @@ function ProductCard({ data, carddelete }) {
   };
 
   return (
-    <div className="relative bg-white border border-gray-300 rounded-lg shadow-lg hover:shadow-green-500 md:max-w-sm">
+    <article className="relative overflow-visible rounded-lg border border-[#DCE8DE] bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_10px_24px_rgba(15,23,42,0.10)]">
       <div className="absolute top-4 right-4">
         <button
           id="dropdownButton"
@@ -56,17 +56,26 @@ function ProductCard({ data, carddelete }) {
         </div>
       </div>
       <img
-        className="object-fill w-full h-80"
+        className="h-32 w-full rounded-lg bg-[#F4F8F5] object-contain p-3"
         src={`${API_BASE_URL}/` + data.Image}
-        alt="Demo Image"
+        alt={data.title || "Scrap item"}
       />
-      <div className="p-4 leading-normal">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-black">
+      <div className="pt-3 leading-normal">
+        <p className="text-[11px] font-bold uppercase text-[#698596]">{data.category || "Scrap"}</p>
+        <h5 className="mt-1 min-h-[2.5rem] text-sm font-bold leading-snug text-gray-900 line-clamp-2">
           {data.title}
         </h5>
-        <p>${data.price}</p>
+        <div className="mt-3 flex items-center justify-between gap-2 border-t border-[#E5EDE6] pt-3">
+          <p className="text-lg font-bold text-[#18931D]">₹{data.price}<span className="text-xs font-medium text-gray-500">/Kg</span></p>
+          <Link
+            to={`/admin/editProduct?id=${data._id}`}
+            className="inline-flex items-center gap-1 rounded-full bg-[#18931D] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#15801A]"
+          >
+            Edit
+          </Link>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/ecoscrap-logo.png";
+import logo from "../assets/ecoscrap-logo-transparent.png";
 
 function BrandLogo({
   className = "",

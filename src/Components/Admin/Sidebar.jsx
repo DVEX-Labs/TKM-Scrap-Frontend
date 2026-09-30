@@ -19,15 +19,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         onClick={() => setSidebarOpen(false)}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-100 flex flex-col transition duration-300 lg:translate-x-0 lg:static lg:inset-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white border-r-2 border-[#CDE7D0] shadow-[3px_0_14px_rgba(24,147,29,0.05)] flex flex-col transition duration-300 lg:translate-x-0 lg:static lg:inset-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="px-5 py-4 border-b border-gray-100">
           <BrandLogo
-            imageClassName="h-9 w-auto"
+            imageClassName="h-10 w-auto"
             linkTo="/"
-            className="bg-black rounded-lg px-3 py-2 w-full justify-center"
+            className="w-full justify-center"
           />
           <p className="text-xs text-gray-500 font-medium text-center mt-2">Admin Panel</p>
         </div>

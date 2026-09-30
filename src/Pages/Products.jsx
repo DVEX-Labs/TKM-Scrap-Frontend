@@ -34,34 +34,6 @@ function formatPriceUnit(title = "") {
   return "Kg";
 }
 
-const PRODUCTS_CACHE_KEY = "eco-scrap-products-v1";
-const PRODUCTS_CACHE_TTL_MS = 5 * 60 * 1000;
-
-function readProductsCache() {
-  try {
-    const raw = sessionStorage.getItem(PRODUCTS_CACHE_KEY);
-    if (!raw) return null;
-    const { data, savedAt } = JSON.parse(raw);
-    if (!Array.isArray(data) || Date.now() - savedAt > PRODUCTS_CACHE_TTL_MS) {
-      return null;
-    }
-    return data;
-  } catch {
-    return null;
-  }
-}
-
-function writeProductsCache(data) {
-  try {
-    sessionStorage.setItem(
-      PRODUCTS_CACHE_KEY,
-      JSON.stringify({ data, savedAt: Date.now() })
-    );
-  } catch {
-    // ignore quota / private mode errors
-  }
-}
-
 function ProductGridSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -111,7 +83,7 @@ function BookFreePickupButton() {
 }
 
 function Products() {
-  const [cards, setCards] = useState(() => readProductsCache() ?? []);
+  const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("All");
@@ -124,8 +96,6 @@ function Products() {
 
     async function fetchProducts() {
       const startTime = Date.now();
-      const hadCache = Boolean(readProductsCache()?.length);
-
       try {
         const response = await axios.get(`${API_BASE_URL}/Products`, {
           timeout: 8000,
@@ -133,11 +103,10 @@ function Products() {
         const list = response.data?.carddetails ?? [];
         if (!cancelled) {
           setCards(list);
-          writeProductsCache(list);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
-        if (!cancelled && !hadCache) {
+        if (!cancelled) {
           setCards([]);
         }
       } finally {
@@ -193,6 +162,7 @@ function Products() {
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
       {showPageHero && (
         <PageHero
+          compact
           eyebrow="Transparent Pricing"
           title="Today's Scrap Rates"
           description="We offer the best market prices for your recyclable materials. Check our rates below and book a free doorstep pickup today."
@@ -216,7 +186,7 @@ function Products() {
 
       <div
         className={`max-w-[1240px] mx-auto px-6 relative z-20 ${
-          compactTopLayout ? "pt-32 md:pt-36" : "mt-8"
+          compactTopLayout ? "pt-32 md:pt-36" : "mt-5"
         }`}
       >
         {isLoading ? (
@@ -294,7 +264,8 @@ function Products() {
                         </p>
                         <Link
                           to="/contact"
-                          className="inline-flex items-center gap-1 bg-[#0F172A] hover:bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0"
+                          state={{ message: `I would like to sell ${card.title} at the listed rate of ₹${card.price}/${card.unit}. Please contact me to arrange a pickup.` }}
+                          className="inline-flex items-center gap-1 bg-[#18931D] hover:bg-[#15801A] text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0"
                         >
                           Sell
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -17,8 +17,8 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Scrap Rates", path: "/products" },
-    { name: "Contact", path: "/contact" },
     { name: "About Us", path: "/about-us" },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (
@@ -27,7 +27,7 @@ const Navbar = () => {
         <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-2xl py-3 px-6' : 'bg-transparent py-2 px-2'}`}>
           
           <BrandLogo
-            imageClassName="h-9 sm:h-10 w-auto"
+            imageClassName="h-11 sm:h-12 w-auto"
             enableAdminShortcut
           />
 

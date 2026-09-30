@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../Layout/AdminLayout";
 import Dashbord from "../Pages/Admin/Dashbord";
 import ProductList from "../Pages/Admin/ProductList";
@@ -23,6 +23,7 @@ function AdminRouter() {
           <Route path="/add" element={<CardForm />} />
           <Route path="/editProduct" element={<Editproduct />} />
           <Route path="/editProduct/" element={<Editproduct />} />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Route>
     </Routes>

@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { FaLocationArrow } from "react-icons/fa";
 import PageHero from "../Components/PageHero";
 import { API_BASE_URL } from "../config";
 import {
@@ -9,6 +11,7 @@ import {
 } from "../utils/validation";
 
 function Contact() {
+  const locationState = useLocation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -19,6 +22,74 @@ function Contact() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
+  const [locationStatus, setLocationStatus] = useState("");
+  const [isLocating, setIsLocating] = useState(false);
+
+  useEffect(() => {
+    const prefilledMessage = locationState.state?.message;
+    if (prefilledMessage) {
+      setMessage(prefilledMessage);
+    }
+  }, [locationState.state]);
+
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus("Location is not supported by this browser.");
+      return;
+    }
+
+    setLocationStatus("");
+    setIsLocating(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        try {
+          const params = new URLSearchParams({
+            format: "jsonv2",
+            lat: String(coords.latitude),
+            lon: String(coords.longitude),
+            addressdetails: "1",
+            zoom: "18",
+            layer: "address",
+          });
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`);
+          if (!response.ok) throw new Error("Address lookup failed");
+
+          const result = await response.json();
+          const addressParts = result.address || {};
+          const streetAddress = [addressParts.house_number, addressParts.road]
+            .filter(Boolean)
+            .join(", ");
+          const locality = [
+            addressParts.suburb,
+            addressParts.neighbourhood,
+            addressParts.village,
+            addressParts.town,
+            addressParts.city,
+            addressParts.county,
+          ].find(Boolean);
+
+          setAddress(streetAddress || result.display_name || "");
+          setLocation(locality || addressParts.state_district || addressParts.state || "");
+          setPincode(addressParts.postcode?.replace(/\D/g, "").slice(0, 6) || "");
+          setLocationStatus("Address filled from your current location. Please check the details.");
+        } catch (error) {
+          console.error("Error getting address from location:", error);
+          setLocationStatus("We found your coordinates, but could not fill the address. Please enter it manually.");
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        const message = error.code === error.PERMISSION_DENIED
+          ? "Location permission was denied. Please enter your address manually."
+          : "Could not get your location. Please try again or enter it manually.";
+        setLocationStatus(message);
+        setIsLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  };
 
   const validateForm = () => {
     const nextErrors = {};
@@ -128,8 +199,8 @@ function Contact() {
         <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col lg:flex-row">
           <div className="w-full lg:w-3/5 p-8 md:p-12">
             <h2 className="text-2xl font-semibold text-gray-900 mb-8">Send a Message</h2>
-            <form onSubmit={handleFormSubmit} className="space-y-6" noValidate>
-              <div>
+            <form onSubmit={handleFormSubmit} className="flex flex-col gap-6" noValidate>
+              <div className="order-1">
                 <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
                   Enter your name <span className="text-red-500">*</span>
                 </label>
@@ -147,7 +218,7 @@ function Contact() {
                 {errors.name && <p className="mt-1.5 text-sm text-red-500">{errors.name}</p>}
               </div>
 
-              <div>
+              <div className="order-2">
                 <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-2">
                   Phone number <span className="text-red-500">*</span>
                 </label>
@@ -172,10 +243,20 @@ function Contact() {
                 {errors.phone && <p className="mt-1.5 text-sm text-red-500">{errors.phone}</p>}
               </div>
 
-              <div>
-                <label htmlFor="address" className="block text-sm font-bold text-gray-700 mb-2">
-                  Address <span className="text-red-500">*</span>
-                </label>
+              <div className="order-4">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <label htmlFor="address" className="block text-sm font-bold text-gray-700">
+                    Address <span className="text-red-500">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={useCurrentLocation}
+                    disabled={isLocating}
+                    className="inline-flex shrink-0 items-center gap-1.5 text-xs font-bold text-[#18931D] transition hover:text-[#15801A] disabled:opacity-60"
+                  >
+                    <FaLocationArrow /> {isLocating ? "Finding location..." : "Use my location"}
+                  </button>
+                </div>
                 <input
                   id="address"
                   type="text"
@@ -188,9 +269,14 @@ function Contact() {
                   placeholder="Enter your address"
                 />
                 {errors.address && <p className="mt-1.5 text-sm text-red-500">{errors.address}</p>}
+                {locationStatus && (
+                  <p className={`mt-1.5 text-sm ${locationStatus.startsWith("Address filled") ? "text-[#18931D]" : "text-amber-700"}`}>
+                    {locationStatus}
+                  </p>
+                )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="order-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="location" className="block text-sm font-bold text-gray-700 mb-2">
                     Location <span className="text-red-500">*</span>
@@ -230,7 +316,7 @@ function Contact() {
                 </div>
               </div>
 
-              <div>
+              <div className="order-3">
                 <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">
                   Email Address <span className="text-gray-400 font-medium">(optional)</span>
                 </label>
@@ -247,7 +333,7 @@ function Contact() {
                 {errors.email && <p className="mt-1.5 text-sm text-red-500">{errors.email}</p>}
               </div>
 
-              <div>
+              <div className="order-6">
                 <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-2">
                   Message <span className="text-red-500">*</span>
                 </label>
@@ -266,16 +352,16 @@ function Contact() {
               </div>
 
               {submitStatus === "success" && (
-                <p className="text-sm font-medium text-[#18931D]">Message sent successfully!</p>
+                <p className="order-7 text-sm font-medium text-[#18931D]">Message sent successfully!</p>
               )}
               {submitStatus === "error" && (
-                <p className="text-sm font-medium text-red-500">Something went wrong. Please try again.</p>
+                <p className="order-7 text-sm font-medium text-red-500">Something went wrong. Please try again.</p>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#18931D] hover:bg-[#15801A] disabled:opacity-70 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_8px_20px_rgba(24,147,29,0.25)] hover:-translate-y-1"
+                className="order-8 w-full bg-[#18931D] hover:bg-[#15801A] disabled:opacity-70 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_8px_20px_rgba(24,147,29,0.25)] hover:-translate-y-1"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>

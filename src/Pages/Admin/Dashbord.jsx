@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   FaBoxOpen,
-  FaClipboardList,
   FaEnvelope,
-  FaPlusCircle,
-  FaTrash,
   FaTruck,
   FaUsers,
 } from "react-icons/fa";
@@ -44,7 +41,6 @@ function Dashbord() {
   const [orderCount, setOrderCount] = useState(0);
   const [contactCount, setContactCount] = useState(0);
   const [allOrders, setAllOrders] = useState([]);
-  const [recentContacts, setRecentContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(() => toDateKey(new Date()));
   const [calendarMonth, setCalendarMonth] = useState(() => {
@@ -93,7 +89,6 @@ function Dashbord() {
         if (contactRes.status === "fulfilled" && contactRes.value.data?.contactData) {
           const contacts = contactRes.value.data.contactData;
           setContactCount(contacts.length);
-          setRecentContacts(contacts.slice(0, 5));
         }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -106,19 +101,9 @@ function Dashbord() {
     fetchDashboardData();
   }, []);
 
-  const handleDeleteContact = async (id) => {
-    try {
-      await axios.post(`${API_BASE_URL}/admin/contact/delete?id=${id}`);
-      setRecentContacts((prev) => prev.filter((item) => item._id !== id));
-      setContactCount((prev) => Math.max(0, prev - 1));
-    } catch (error) {
-      console.error("Error deleting contact:", error);
-    }
-  };
-
   return (
-    <div className="space-y-4">
-      <div className="relative overflow-hidden rounded-2xl bg-[#18931D] p-5 md:p-6 text-white shadow-[0_8px_24px_rgba(24,147,29,0.2)]">
+    <div className="space-y-3 lg:h-[calc(100dvh-2rem)] lg:overflow-hidden">
+      <div className="relative overflow-hidden rounded-2xl bg-[#18931D] p-4 md:p-5 text-white shadow-[0_8px_24px_rgba(24,147,29,0.2)]">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
         <div className="relative z-10">
           <p className="text-green-100 text-sm font-semibold uppercase tracking-wider mb-2">Admin Panel</p>
@@ -129,7 +114,7 @@ function Dashbord() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         <StatCard
           label="Total Scraps"
           value={loading ? "..." : productCount}
@@ -149,7 +134,7 @@ function Dashbord() {
         <StatCard
           label="Contact Messages"
           value={loading ? "..." : contactCount}
-          hint="Latest inquiries below"
+          hint="Customer inquiries"
           icon={<FaEnvelope />}
           iconBg="bg-amber-50 text-amber-600"
         />
@@ -162,7 +147,7 @@ function Dashbord() {
         />
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
           <div>
             <h2 className="text-lg font-bold text-gray-900">Pickup Calendar</h2>
@@ -191,86 +176,6 @@ function Dashbord() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="xl:col-span-1 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="flex flex-col gap-3">
-            <Link
-              to="/admin/add"
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-[#18931D] hover:bg-[#15801A] text-white rounded-xl font-semibold transition-colors"
-            >
-              <FaPlusCircle /> Add Scrap
-            </Link>
-            <Link
-              to="/admin/adminproduct"
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-[#F4FAF5] hover:bg-[#E8F5E9] text-gray-800 rounded-xl font-semibold transition-colors"
-            >
-              <FaBoxOpen /> Manage Scraps
-            </Link>
-            <Link
-              to="/admin/users"
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-[#F4FAF5] hover:bg-[#E8F5E9] text-gray-800 rounded-xl font-semibold transition-colors"
-            >
-              <FaClipboardList /> Manage Pickup Orders
-            </Link>
-          </div>
-        </div>
-
-        <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Recent Contact Messages</h2>
-            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Includes address details</span>
-          </div>
-
-          {recentContacts.length === 0 ? (
-            <p className="text-gray-500 py-8 text-center text-sm">No contact messages yet.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left min-w-[720px]">
-                <thead>
-                  <tr className="border-b border-gray-100 text-gray-400 text-xs font-semibold uppercase">
-                    <th className="py-3 pr-4">Name</th>
-                    <th className="py-3 pr-4">Phone</th>
-                    <th className="py-3 pr-4">Address</th>
-                    <th className="py-3 pr-4">Location</th>
-                    <th className="py-3 pr-4">Pincode</th>
-                    <th className="py-3 pr-4">Email</th>
-                    <th className="py-3 pr-4">Message</th>
-                    <th className="py-3 pr-4">Date</th>
-                    <th className="py-3">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50 text-sm">
-                  {recentContacts.map((contact) => (
-                    <tr key={contact._id} className="hover:bg-gray-50/80 transition">
-                      <td className="py-3 pr-4 font-medium text-gray-900">{contact.name}</td>
-                      <td className="py-3 pr-4 text-gray-600">+91 {contact.phone}</td>
-                      <td className="py-3 pr-4 text-gray-600 max-w-[120px] truncate">{contact.address || "—"}</td>
-                      <td className="py-3 pr-4 text-gray-600 max-w-[120px] truncate">{contact.location || "—"}</td>
-                      <td className="py-3 pr-4 text-gray-600">{contact.pincode || "—"}</td>
-                      <td className="py-3 pr-4 text-gray-600">{contact.email || "—"}</td>
-                      <td className="py-3 pr-4 text-gray-600 max-w-xs truncate">{contact.message || "—"}</td>
-                      <td className="py-3 pr-4 text-gray-500 whitespace-nowrap">
-                        {contact.createdAt ? new Date(contact.createdAt).toLocaleDateString() : "N/A"}
-                      </td>
-                      <td className="py-3">
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteContact(contact._id)}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                          aria-label="Delete contact message"
-                        >
-                          <FaTrash className="text-sm" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
