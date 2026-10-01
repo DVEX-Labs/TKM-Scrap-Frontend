@@ -47,7 +47,7 @@ function Footer() {
                 <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-[#18931D]">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
                 </div>
-                <span className="text-slate-400 font-medium">+91 98765 43210</span>
+                <span className="text-slate-400 font-medium">+91 95671 63707</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-[#18931D]">

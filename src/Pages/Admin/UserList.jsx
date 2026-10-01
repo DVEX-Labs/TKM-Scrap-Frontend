@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import Logo from "../../assets/image.png";
 import { API_BASE_URL } from "../../config";
-import OrderMonthCalendar, { toDateKey } from "../../Components/Admin/OrderMonthCalendar";
 import OrdersTableSkeleton from "../../Components/Admin/OrdersTableSkeleton";
+import { toDateKey } from "../../Components/Admin/OrderMonthCalendar";
 import { waitMinLoader } from "../../utils/loader";
 
 function getTodayKey() {
@@ -31,23 +30,10 @@ function getDateLabel(dateKey) {
 const UserList = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [selectedDate, setSelectedDate] = useState(getTodayKey());
-  const [calendarMonth, setCalendarMonth] = useState(() => {
-    const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), 1);
-  });
   const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [loadingContacts, setLoadingContacts] = useState(false);
 
-  const orderDateKeys = useMemo(() => {
-    const keys = new Set();
-    allOrders.forEach((order) => {
-      if (order.createdAt) {
-        keys.add(order.createdAt.slice(0, 10));
-      }
-    });
-    return keys;
-  }, [allOrders]);
 
   const filteredOrders = useMemo(
     () =>
@@ -68,7 +54,7 @@ const UserList = () => {
         setAllOrders(response.data.userData);
       }
     } catch (error) {
-      console.log(error, "error in fetching user data from backend to frontend");
+      console.error(error);
     } finally {
       await waitMinLoader(startTime);
       setLoading(false);
@@ -86,20 +72,18 @@ const UserList = () => {
         setAllOrders((prev) => prev.filter((user) => user._id !== id));
       }
     } catch (error) {
-      console.log(error, "error in delete doc check into the delete btn");
+      console.error(error);
     }
   }
 
   const downloadPDF = (user) => {
     const input = document.getElementById(`user-${user._id}`);
     if (!input) return;
-    html2canvas(input).then(() => {
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-
-      const img = new Image();
-      img.src = Logo;
-      img.onload = () => {
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const img = new Image();
+    img.src = Logo;
+    img.onload = () => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         canvas.width = img.width;
@@ -121,9 +105,8 @@ const UserList = () => {
         pdf.text(`Country: ${user.country}`, 10, 90);
         pdf.text(`Date/Time: ${new Date(user.createdAt).toLocaleString()}`, 10, 100);
 
-        pdf.save(`${user.full_name}_details.pdf`);
-      };
-    });
+      pdf.save(`${user.full_name}_details.pdf`);
+    };
   };
 
   return (
@@ -140,11 +123,7 @@ const UserList = () => {
           <input
             type="date"
             value={selectedDate}
-            onChange={(e) => {
-              setSelectedDate(e.target.value);
-              const picked = new Date(`${e.target.value}T00:00:00`);
-              setCalendarMonth(new Date(picked.getFullYear(), picked.getMonth(), 1));
-            }}
+            onChange={(e) => setSelectedDate(e.target.value)}
             className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#18931D]/40"
           />
           <span className="text-sm font-semibold text-[#18931D]">{getDateLabel(selectedDate)}</span>

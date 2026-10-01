@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../Layout/AdminLayout";
 import Dashbord from "../Pages/Admin/Dashbord";
@@ -16,13 +15,10 @@ function AdminRouter() {
       <Route path="/" element={<Auth />}>
         <Route path="/" element={<AdminLayout />}>
           <Route index element={<Dashbord />} />
-          <Route path="/adminProduct" element={<ProductList />} />
           <Route path="/adminproduct" element={<ProductList />} />
-          <Route path="/Users" element={<UserList />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/add" element={<CardForm />} />
           <Route path="/editProduct" element={<Editproduct />} />
-          <Route path="/editProduct/" element={<Editproduct />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Route>

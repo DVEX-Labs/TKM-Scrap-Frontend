@@ -51,7 +51,7 @@ function ProductList() {
             Swal.fire("Error!", "There was an error deleting your scrap item.", "error");
           }
         } catch (error) {
-          console.log(error, "error in scrap delete");
+          console.error(error);
           Swal.fire("Error!", "There was an error deleting your scrap item.", "error");
         }
       }

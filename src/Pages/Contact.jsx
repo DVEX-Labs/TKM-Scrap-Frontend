@@ -165,7 +165,7 @@ function Contact() {
         .join("\n");
 
       window.open(
-        `https://wa.me/917406941223?text=${encodeURIComponent(whatsappText)}`,
+        `https://wa.me/919567163707?text=${encodeURIComponent(whatsappText)}`,
         "_blank",
         "noopener,noreferrer"
       );
@@ -388,7 +388,8 @@ function Contact() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 mb-1">Phone Number</p>
-                  <p className="text-gray-600 font-medium">+91 74069 41223</p>
+                  <p className="text-gray-600 font-medium">+91 95671 63707</p>
+                  <p className="text-gray-600 font-medium">+91 81378 69563</p>
                 </div>
               </div>
 

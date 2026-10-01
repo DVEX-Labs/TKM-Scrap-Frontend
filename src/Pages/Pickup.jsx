@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -91,7 +90,6 @@ const handleSubmit = async (values, { setSubmitting }, navigate) => {
       formData
     );
 
-    console.log("Server Response:", response.data);
     if (response.status === 200) {
       navigate("/");
     }
@@ -100,7 +98,6 @@ const handleSubmit = async (values, { setSubmitting }, navigate) => {
   }
 
   setSubmitting(false);
-  console.log("Form submission complete");
 };
 
 const Pickup = () => {

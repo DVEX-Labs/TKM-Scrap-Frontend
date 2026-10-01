@@ -7,6 +7,7 @@ const AnimatedText = () => {
   const h1Ref = useRef(null);
   const pRef = useRef(null);
   const ctaRef = useRef(null);
+  const imageRef = useRef(null);
 
   useEffect(() => {
     gsap.fromTo(
@@ -25,6 +26,12 @@ const AnimatedText = () => {
       ctaRef.current,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out" }
+    );
+
+    gsap.fromTo(
+      imageRef.current,
+      { opacity: 0, y: 40, scale: 0.95 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.2, delay: 0.5, ease: "power3.out" }
     );
   }, []);
 
@@ -82,7 +89,8 @@ const AnimatedText = () => {
               </Link>
             </div>
 
-            <div className="hidden sm:flex items-center gap-4 mt-6 text-sm font-semibold text-gray-500 pl-1">
+            {/* Trust badges — visible on all screens */}
+            <div className="flex items-center justify-center md:justify-start gap-4 mt-6 text-sm font-semibold text-gray-500 pl-1">
               <div className="flex items-center gap-1.5"><svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg> Free Pickup</div>
               <div className="flex items-center gap-1.5"><svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg> Best Rates</div>
               <div className="flex items-center gap-1.5"><svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg> Instant Pay</div>
@@ -91,23 +99,23 @@ const AnimatedText = () => {
 
         </div>
 
-        {/* Right Image Area */}
-        <div className="absolute -right-14 top-24 w-[190px] opacity-20 pointer-events-none md:static md:w-[45%] md:opacity-100 md:pointer-events-auto md:flex md:justify-end md:mt-0">
-          <div className="relative w-full max-w-[550px]">
+        {/* Right Image Area — visible on mobile below buttons AND on desktop side-by-side */}
+        <div ref={imageRef} className="w-full mt-4 md:mt-0 md:w-[45%] flex justify-center md:justify-end">
+          <div className="relative w-full max-w-[400px] md:max-w-[550px]">
             {/* Dynamic decorative backdrop for the truck */}
             <div className="absolute top-[10%] -right-[5%] w-[90%] h-[90%] bg-gradient-to-br from-[#D8FACF] to-[#bbf7b4] rounded-full blur-2xl -z-10 animate-pulse" style={{ animationDuration: '4s' }}></div>
             <div className="absolute -bottom-10 left-[10%] w-[80%] h-[30%] bg-black/10 rounded-[100%] blur-xl -z-10"></div>
 
             <img
               src={Lorry}
-              alt="Eco Lorry"
+              alt="TKM Scraps - Free doorstep scrap pickup truck in Kannur"
               className="w-full h-auto drop-shadow-2xl hover:scale-105 hover:-translate-y-2 transition-transform duration-700 relative z-10"
             />
 
             {/* Floating stats badge */}
-            <div className="absolute top-10 -left-6 md:-left-12 bg-white px-5 py-4 rounded-2xl shadow-xl border border-gray-50 hidden md:flex items-center gap-4 z-20 animate-bounce" style={{ animationDuration: '3s' }}>
-              <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div className="absolute top-6 -left-2 md:top-10 md:-left-12 bg-white px-4 py-3 md:px-5 md:py-4 rounded-2xl shadow-xl border border-gray-50 flex items-center gap-3 md:gap-4 z-20 animate-bounce" style={{ animationDuration: '3s' }}>
+              <div className="w-9 h-9 md:w-10 md:h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               </div>
               <div>
                 <p className="text-sm font-bold text-gray-900 leading-tight">Top Rates</p>
@@ -124,3 +132,4 @@ const AnimatedText = () => {
 };
 
 export default AnimatedText;
+

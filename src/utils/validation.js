@@ -1,6 +1,6 @@
-export const INDIAN_PHONE_REGEX = /^[6-9]\d{9}$/;
-export const INDIAN_PINCODE_REGEX = /^\d{6}$/;
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const INDIAN_PHONE_REGEX = /^[6-9]\d{9}$/;
+const INDIAN_PINCODE_REGEX = /^\d{6}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function validateIndianPincode(pincode) {
   const digits = pincode.replace(/\D/g, "").slice(0, 6);

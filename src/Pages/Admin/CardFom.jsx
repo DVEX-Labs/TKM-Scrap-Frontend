@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { FaImage, FaUpload } from "react-icons/fa";
 import { API_BASE_URL } from "../../config";
 import { PRODUCT_CATEGORIES } from "../../constants/productCategories";
 
-const DRAFT_KEY = "eco-scrap-add-draft";
-const PREVIEW_KEY = "eco-scrap-add-image-preview";
+const DRAFT_KEY = "tkm-scraps-add-draft";
+const PREVIEW_KEY = "tkm-scraps-add-image-preview";
 
 const CardForm = () => {
   const [formData, setFormData] = useState({
