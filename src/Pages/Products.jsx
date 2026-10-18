@@ -10,6 +10,24 @@ import {
   handleProductImageError,
 } from "../utils/productImages";
 
+const PRODUCTS_CACHE_KEY = "tkm_cached_products";
+
+// Baseline scrap rates shown instantly (0-second wait) on first visit
+const DEFAULT_BASELINE_PRODUCTS = [
+  { _id: "base-1", title: "Iron Scrap (Heavy)", price: 28, category: "Metal", unit: "Kg", Image: "" },
+  { _id: "base-2", title: "Aluminium Scrap", price: 160, category: "Metal", unit: "Kg", Image: "" },
+  { _id: "base-3", title: "Copper Scrap", price: 720, category: "Metal", unit: "Kg", Image: "" },
+  { _id: "base-4", title: "Brass Scrap", price: 420, category: "Metal", unit: "Kg", Image: "" },
+  { _id: "base-5", title: "Plastic Scrap", price: 12, category: "Plastic", unit: "Kg", Image: "" },
+  { _id: "base-6", title: "Newspaper Scrap", price: 16, category: "Paper", unit: "Kg", Image: "" },
+  { _id: "base-7", title: "Cardboard Box Scrap", price: 10, category: "Paper", unit: "Kg", Image: "" },
+  { _id: "base-8", title: "Split AC Scrap", price: 2500, category: "Home Appliances", unit: "Pc", Image: "" },
+  { _id: "base-9", title: "Single Door Refrigerator", price: 900, category: "Home Appliances", unit: "Pc", Image: "" },
+  { _id: "base-10", title: "Washing Machine Scrap", price: 550, category: "Home Appliances", unit: "Pc", Image: "" },
+  { _id: "base-11", title: "Lead Acid Battery", price: 85, category: "E-Waste", unit: "Kg", Image: "" },
+  { _id: "base-12", title: "Steel Scraps", price: 40, category: "Metal", unit: "Kg", Image: "" },
+];
+
 const CATEGORY_RULES = [
   { category: "Paper", keywords: ["paper", "newspaper", "cardboard", "book", "magazine"] },
   { category: "Metal", keywords: ["metal", "iron", "steel", "copper", "aluminum", "aluminium", "brass", "tin"] },
@@ -62,27 +80,6 @@ function ProductGridSkeleton() {
   );
 }
 
-function NoProductsPlaceholder({ onRetry }) {
-  return (
-    <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm max-w-lg mx-auto">
-      <div className="text-4xl mb-3">🔍</div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">No items found</h3>
-      <p className="text-gray-500 text-sm mb-4">
-        Scrap rates will appear here once products are loaded from the catalog.
-      </p>
-      {onRetry && (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="px-4 py-2 bg-[#18931D] text-white rounded-xl text-sm font-semibold hover:bg-[#15801A] transition shadow-sm"
-        >
-          Refresh Rates
-        </button>
-      )}
-    </div>
-  );
-}
-
 function BookFreePickupButton() {
   return (
     <div className="mt-10 text-center">
@@ -100,47 +97,50 @@ function BookFreePickupButton() {
 }
 
 function Products() {
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Stale-While-Revalidate: load immediately from localStorage or default baseline
+  const [cards, setCards] = useState(() => {
+    try {
+      const cached = localStorage.getItem(PRODUCTS_CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {
+      // ignore storage error
+    }
+    return DEFAULT_BASELINE_PRODUCTS;
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("All");
-  const [isWarmingUp, setIsWarmingUp] = useState(false);
 
   const categories = PRODUCT_CATEGORY_FILTER_ORDER;
 
-  const fetchProducts = async () => {
-    setIsLoading(true);
-    const warmupTimer = setTimeout(() => {
-      setIsWarmingUp(true);
-    }, 2500);
-
+  // Background fetch to sync latest live rates from MongoDB
+  const syncProductsFromBackend = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/Products`, {
         timeout: 35000,
       });
-      const list = response.data?.carddetails ?? [];
-      setCards(list);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      // Attempt retry once if it was a network/timeout error
-      try {
-        const retryRes = await axios.get(`${API_BASE_URL}/Products`, {
-          timeout: 15000,
-        });
-        const retryList = retryRes.data?.carddetails ?? [];
-        setCards(retryList);
-      } catch (retryErr) {
-        console.error("Retry failed:", retryErr);
+      const list = response.data?.carddetails;
+      if (Array.isArray(list) && list.length > 0) {
+        setCards(list);
+        try {
+          localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(list));
+        } catch {
+          // ignore storage quota error
+        }
       }
-    } finally {
-      clearTimeout(warmupTimer);
-      setIsWarmingUp(false);
-      setIsLoading(false);
+    } catch (error) {
+      console.warn("Live rates sync check:", error.message);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    syncProductsFromBackend();
   }, []);
 
   const cardsWithCategory = useMemo(
@@ -167,12 +167,11 @@ function Products() {
     return matchesSearch && matchesCategory;
   });
 
-  const hasProducts = cardsWithCategory.length > 0;
   const hasFilteredResults = filteredCards.length > 0;
 
   return (
     <div className="w-full bg-[#F9FBF9] min-h-screen pb-24">
-      {/* PageHero is now permanently rendered to prevent any layout shift during loading */}
+      {/* Permanent PageHero with search bar — zero layout shift */}
       <PageHero
         compact
         eyebrow="Transparent Pricing"
@@ -197,19 +196,7 @@ function Products() {
 
       <div className="max-w-[1240px] mx-auto px-6 relative z-20 mt-6">
         {isLoading ? (
-          <div>
-            {isWarmingUp && (
-              <div className="text-center py-3 mb-4 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-xs font-semibold animate-pulse">
-                🌱 Fetching latest live rates from scrap database...
-              </div>
-            )}
-            <ProductGridSkeleton />
-          </div>
-        ) : !hasProducts ? (
-          <>
-            <NoProductsPlaceholder onRetry={fetchProducts} />
-            <BookFreePickupButton />
-          </>
+          <ProductGridSkeleton />
         ) : (
           <>
             <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-1">
@@ -221,7 +208,7 @@ function Products() {
                   <button
                     key={category}
                     onClick={() => setActiveTab(category)}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full font-semibold text-sm transition-all ${
+                    className={`whitespace-nowrap px-4 py-2 rounded-full font-semibold text-sm transition-all cursor-pointer ${
                       activeTab === category
                         ? "bg-[#0F172A] text-white"
                         : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
@@ -235,15 +222,16 @@ function Products() {
             </div>
 
             {!hasFilteredResults ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600 text-sm mb-3">No items match your current search or category.</p>
+              <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="text-3xl mb-2">🔍</div>
+                <p className="text-gray-800 font-semibold text-sm mb-1">No items match your filter.</p>
                 <button
                   type="button"
                   onClick={() => {
                     setSearchTerm("");
                     setActiveTab("All");
                   }}
-                  className="text-sm font-semibold text-[#18931D] hover:underline"
+                  className="text-sm font-semibold text-[#18931D] hover:underline cursor-pointer"
                 >
                   Reset search & filters
                 </button>
@@ -299,6 +287,7 @@ function Products() {
                 })}
               </div>
             )}
+            <BookFreePickupButton />
           </>
         )}
       </div>
