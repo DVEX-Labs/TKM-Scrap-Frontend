@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
+import {
+  getProductImageUrl,
+  getCategoryFallback,
+  handleProductImageError,
+} from "../../utils/productImages";
 
 function ProductCard({ data, carddelete }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +13,8 @@ function ProductCard({ data, carddelete }) {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const imageUrl = getProductImageUrl(data.Image) || getCategoryFallback(data.category);
 
   return (
     <article className="relative overflow-visible rounded-lg border border-[#DCE8DE] bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_10px_24px_rgba(15,23,42,0.10)]">
@@ -47,7 +54,7 @@ function ProductCard({ data, carddelete }) {
             <li>
               <p
                 onClick={() => carddelete(data._id)}
-                className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
               >
                 Delete
               </p>
@@ -57,8 +64,9 @@ function ProductCard({ data, carddelete }) {
       </div>
       <img
         className="h-32 w-full rounded-lg bg-[#F4F8F5] object-contain p-3"
-        src={`${API_BASE_URL}/` + data.Image}
+        src={imageUrl}
         alt={data.title || "Scrap item"}
+        onError={(e) => handleProductImageError(e, data.category)}
       />
       <div className="pt-3 leading-normal">
         <p className="text-[11px] font-bold uppercase text-[#698596]">{data.category || "Scrap"}</p>

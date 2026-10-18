@@ -36,6 +36,16 @@ function StatCard({ label, value, hint, icon, iconBg, to }) {
   );
 }
 
+function getLocalDateKey(dateInput) {
+  if (!dateInput) return "";
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return "";
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 function Dashbord() {
   const [productCount, setProductCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
@@ -51,8 +61,9 @@ function Dashbord() {
   const orderDateKeys = useMemo(() => {
     const keys = new Set();
     allOrders.forEach((order) => {
-      if (order.createdAt) {
-        keys.add(order.createdAt.slice(0, 10));
+      const key = getLocalDateKey(order.createdAt);
+      if (key) {
+        keys.add(key);
       }
     });
     return keys;
@@ -61,7 +72,7 @@ function Dashbord() {
   const selectedDateOrderCount = useMemo(
     () =>
       allOrders.filter(
-        (order) => order.createdAt && order.createdAt.startsWith(selectedDate)
+        (order) => getLocalDateKey(order.createdAt) === selectedDate
       ).length,
     [allOrders, selectedDate]
   );

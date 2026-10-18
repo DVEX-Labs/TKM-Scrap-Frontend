@@ -27,6 +27,16 @@ function getDateLabel(dateKey) {
   });
 }
 
+function getLocalDateKey(dateInput) {
+  if (!dateInput) return "";
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return "";
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 const UserList = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [selectedDate, setSelectedDate] = useState(getTodayKey());
@@ -34,29 +44,26 @@ const UserList = () => {
   const [contacts, setContacts] = useState([]);
   const [loadingContacts, setLoadingContacts] = useState(false);
 
-
   const filteredOrders = useMemo(
     () =>
       allOrders.filter(
-        (order) => order.createdAt && order.createdAt.startsWith(selectedDate)
+        (order) => order.createdAt && getLocalDateKey(order.createdAt) === selectedDate
       ),
     [allOrders, selectedDate]
   );
 
-
-
   async function fetchUser() {
-    const startTime = Date.now();
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/Users`);
+      const response = await axios.get(`${API_BASE_URL}/Users`, {
+        timeout: 30000,
+      });
       if (response.data?.userData) {
         setAllOrders(response.data.userData);
       }
     } catch (error) {
       console.error(error);
     } finally {
-      await waitMinLoader(startTime);
       setLoading(false);
     }
   }
@@ -174,9 +181,18 @@ const UserList = () => {
                   <td className="px-3 py-3">
                     {user.pickupImage ? (
                       <img
-                        src={`${API_BASE_URL}/assets/pickupImage/${user.pickupImage}`}
+                        src={
+                          user.pickupImage.startsWith("data:") || user.pickupImage.startsWith("http")
+                            ? user.pickupImage
+                            : `${API_BASE_URL}/assets/pickupImage/${user.pickupImage}`
+                        }
                         className="w-16 h-16 object-cover rounded-lg border border-gray-100"
                         alt="Pickup"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src =
+                            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'><rect width='80' height='80' rx='8' fill='%23F3F4F6'/><text x='40' y='44' font-family='sans-serif' font-size='10' fill='%239CA3AF' text-anchor='middle'>Photo</text></svg>";
+                        }}
                       />
                     ) : (
                       <span className="text-xs text-gray-400">No image</span>
